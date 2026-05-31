@@ -16,8 +16,8 @@ class EigenValueVectorPairTest(unittest.TestCase):
         val = 3.0
         vec = (-1.0, 0.5, -2.0)
         val_vec = EigenValueVectorPair(val, vec)
-        self.assertEquals(val_vec.val, val)
-        self.assertEquals(val_vec.vec, vec)
+        self.assertEqual(val_vec.val, val)
+        self.assertEqual(val_vec.vec, vec)
 
 def suite():
     suites = []

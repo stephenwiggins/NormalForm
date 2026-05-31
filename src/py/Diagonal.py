@@ -143,7 +143,7 @@ class Diagonalizer:
         else:
             d = size
         result = zeros((d, d), Float)
-        for i in xrange(0, d):
+        for i in range(0, d):
             result[i, i] = +1.0
         return result
 
@@ -161,7 +161,7 @@ class Diagonalizer:
         #matrices are accessed by row first, then column:
         d = self._lie.n_vars()
         result = zeros((d, d), Float)
-        for qi in xrange(0, d, 2):
+        for qi in range(0, d, 2):
             pi = qi+1
             result[qi, pi] = +1.0
             result[pi, qi] = -1.0
@@ -204,7 +204,7 @@ class Diagonalizer:
         """
         grad_h = self._lie.grad(h)
         result = []
-        for qi in xrange(0, self.n_vars(), 2):
+        for qi in range(0, self.n_vars(), 2):
             pi = qi+1
             result.append(grad_h[pi])
             result.append(-grad_h[qi])
@@ -223,9 +223,9 @@ class Diagonalizer:
         assert h_2.degree()==2 or h_2==self._lie.zero()
         d = self._lie.n_vars()
         result = zeros((d, d), Complex)
-        for row in xrange(0, d):
+        for row in range(0, d):
             diff_row = h_2.diff(row)
-            for col in xrange(0, d):
+            for col in range(0, d):
                 diff_row_col = diff_row.diff(col)
                 assert diff_row_col.is_constant()
                 if len(diff_row_col) > 0:
@@ -372,7 +372,7 @@ class Diagonalizer:
         pm_val_vec_pairs = self._eig.plus_minus_pairs
         rearranged_pairs = []
         columns = []
-        for i in xrange(0, self.dof()):
+        for i in range(0, self.dof()):
             i0 = 2*i
             i1 = i0+1
             plus, minus = pm_val_vec_pairs[i]
@@ -398,7 +398,7 @@ class Diagonalizer:
             #logger.info(a)
             #logger.info(b)
             c = 0.0
-            for k in xrange(0, self.dof()):
+            for k in range(0, self.dof()):
                 k0 = 2*k
                 k1 = k0+1
                 c += (a[k0]*b[k1] - a[k1]*b[k0])
@@ -515,10 +515,10 @@ class Diagonalizer:
         """
         n_vars = self.n_vars()
         res = []
-        for irow in xrange(n_vars):
+        for irow in range(n_vars):
             lin = Polynomial(n_vars)
             row = mat[irow]
-            for icol in xrange(n_vars):
+            for icol in range(n_vars):
                 mon = self._lie.coordinate_monomial(icol)
                 lin += row[icol]*mon
             res.append(lin)
@@ -557,7 +557,7 @@ class Complexifier:
         """
         subs = []
         s2 = 1.0/sqrt(2.0)
-        for i in xrange(self.alg.dof()):
+        for i in range(self.alg.dof()):
             if self.eq_type[i] == 'c':
                 q = s2 * self.alg.q(i)
                 p = s2 * self.alg.p(i)
@@ -597,7 +597,7 @@ class Complexifier:
         """
         subs = []
         s2 = 1.0/sqrt(2.0)
-        for i in xrange(self.alg.dof()):
+        for i in range(self.alg.dof()):
             if self.eq_type[i] == 'c':
                 q = s2 * self.alg.q(i)
                 p = s2 * self.alg.p(i)

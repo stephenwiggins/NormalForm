@@ -10,54 +10,54 @@ class Type(unittest.TestCase):
     def test_empty_type_to_str(self):
         eq_type = ''
         out = equilibrium_type_to_str(eq_type)
-        self.assertEquals(out, '')
+        self.assertEqual(out, '')
 
     def test_saddle_type_to_str(self):
         eq_type = 's'
         out = equilibrium_type_to_str(eq_type)
-        self.assertEquals(out, 'saddle')
+        self.assertEqual(out, 'saddle')
 
     def test_centre_type_to_str(self):
         eq_type = 'c'
         out = equilibrium_type_to_str(eq_type)
-        self.assertEquals(out, 'centre')
+        self.assertEqual(out, 'centre')
 
     def test_zero_type_to_str(self):
         eq_type = '0'
         out = equilibrium_type_to_str(eq_type)
-        self.assertEquals(out, 'zero')
+        self.assertEqual(out, 'zero')
 
     def test_empty_type_to_tex(self):
         eq_type = ''
         out = equilibrium_type_to_tex(eq_type)
-        self.assertEquals(out, '')
+        self.assertEqual(out, '')
 
     def test_sadle_type_to_tex(self):
         eq_type = 's'
         out = equilibrium_type_to_tex(eq_type)
-        self.assertEquals(out, 'saddle')
+        self.assertEqual(out, 'saddle')
 
     def test_centre_type_to_tex(self):
         eq_type = 'c'
         out = equilibrium_type_to_tex(eq_type)
-        self.assertEquals(out, 'centre')
+        self.assertEqual(out, 'centre')
 
     def test_zero_type_to_tex(self):
         eq_type = '0'
         out = equilibrium_type_to_tex(eq_type)
-        self.assertEquals(out, 'zero')
+        self.assertEqual(out, 'zero')
 
     def test_equilibrium_type_to_str(self):
         eq_type = 'scssscc000'
         out = equilibrium_type_to_str(eq_type)
         exp = 'saddle x centre x saddle^(3) x centre^(2) x zero^(3)'
-        self.assertEquals(out, exp, '%s\n%s'%(out, exp))
+        self.assertEqual(out, exp, '%s\n%s'%(out, exp))
 
     def test_equilibrium_type_to_tex(self):
         eq_type = 'scssscc000'
         out = equilibrium_type_to_tex(eq_type)
         exp = 'saddle$\\times$centre$\\times$saddle$^{3}$$\\times$centre$^{2}$$\\times$zero$^{3}$'
-        self.assertEquals(out, exp, '%s\n%s'%(out, exp))
+        self.assertEqual(out, exp, '%s\n%s'%(out, exp))
 
 def suite():
     suites = []

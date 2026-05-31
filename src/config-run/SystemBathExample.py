@@ -1,5 +1,7 @@
+"""
 This software is Copyright (C) 2004-2008  Bristol University
 and is released under the GNU General Public License version 2.
+"""
 
 #setup logging
 import os
@@ -57,9 +59,9 @@ def compute_diagonalisation(lie_algebra, h_er_trunc, max_degree, tolerance, syst
     nf.h_er = nf.alg.isograde(nf.h_er, 0, desired_grade+1)
     nf.confirm_equilibrium_point()
     #output max grade
-    print desired_grade
+    print(desired_grade)
     #output h_er
-    print nf.h_er
+    print(nf.h_er)
     #diagonalize
     nf.diagonalize()
     #make a polynomial ring io
@@ -71,7 +73,7 @@ def compute_diagonalisation(lie_algebra, h_er_trunc, max_degree, tolerance, syst
     ring_io.write_sexp_vector_of_polynomials(file_ostr, er_from_dr)
     file_ostr.close()
     #output equilibrium type
-    print nf.eig.get_equilibrium_type()
+    print(nf.eig.get_equilibrium_type())
     #compute the complexification maps
     eq_type = nf.eig.get_equilibrium_type()
     com = Complexifier(lie_algebra, eq_type)
@@ -87,7 +89,7 @@ def dump_isogrades(graded_algebra, poly, max_grade, system_prefix, poly_name):
     logger.info('dumping taylor series...')
     file_prefix = '%s--%s' % (system_prefix, poly_name)
     ring_io = PolynomialRingIO(graded_algebra)
-    for grade in xrange(max_grade + 1):
+    for grade in range(max_grade + 1):
         file_name = '%s--grade-%d.pol' % (file_prefix, grade)
         file_ostr = open(file_name, 'w')
         p_grade = graded_algebra.isograde(poly, grade)
@@ -168,9 +170,9 @@ if __name__ == '__main__':
     stats = pstats.Stats(profile_name)
     stats.strip_dirs()
     stats.sort_stats('time', 'cum', 'calls')
-    print '[1] Statistics:'
+    print('[1] Statistics:')
     stats.print_stats(proportion_worst_results)
-    print '[2] Callers for the above:'
+    print('[2] Callers for the above:')
     stats.print_callers(proportion_worst_results)
 
 

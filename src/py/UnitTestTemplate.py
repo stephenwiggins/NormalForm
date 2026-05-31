@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.3
+#!/usr/bin/env python3
 
 # This software is Copyright (C) 2004-2008  Bristol University
 # and is released under the GNU General Public License version 2.
@@ -9,7 +9,7 @@ import unittest
 class TestXFeature(unittest.TestCase):
 
     def test_that_test_fixture_is_called(self):
-        self.failUnless(False)
+        self.assertTrue(False)
 
 def suite():
     suites = []

@@ -20,8 +20,8 @@ We use the linux "uuidgen" operating system call.
 
 """
 
-import commands
+import subprocess
 
 def uuidgen():
-    return commands.getoutput('uuidgen')
+    return subprocess.getoutput('uuidgen')
 

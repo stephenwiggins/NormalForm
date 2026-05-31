@@ -42,7 +42,7 @@ class Diagonal(unittest.TestCase):
                  Powers((0, 0, 3, 0, 1, 0)): -4.0 }
         h = Polynomial(2*dof, terms=terms)
         alg = LieAlgebra(dof)
-        self.assert_(not alg.is_diagonal_polynomial(h))
+        self.assertTrue(not alg.is_diagonal_polynomial(h))
 
     def test_off_diagonal_but_equal_powers(self):
 
@@ -57,7 +57,7 @@ class Diagonal(unittest.TestCase):
                  Powers((0, 0, 0, 0, 1, 1)): 7.12 }
         g = Polynomial(2*dof, terms=terms)
         alg = LieAlgebra(dof)
-        self.assert_(not alg.is_diagonal_polynomial(g))
+        self.assertTrue(not alg.is_diagonal_polynomial(g))
 
     def test_diagonal_part(self):
         dof = 3
@@ -67,10 +67,10 @@ class Diagonal(unittest.TestCase):
                  Powers((0, 0, 0, 0, 1, 1)): 7.12 }
         g = Polynomial(2*dof, terms=terms)
         alg = LieAlgebra(dof)
-        self.assert_(alg.diagonal_part_of_polynomial(g) == g)
+        self.assertTrue(alg.diagonal_part_of_polynomial(g) == g)
         h = 0.54*Polynomial.Monomial((2, 0, 1, 0, 0, 0))
         g += h
-        self.assert_(alg.diagonal_part_of_polynomial(g)+h == g)
+        self.assertTrue(alg.diagonal_part_of_polynomial(g)+h == g)
 
     def test_is_diagonal(self):
 
@@ -83,7 +83,7 @@ class Diagonal(unittest.TestCase):
                  Powers((0, 0, 0, 0, 1, 1)): 7.12 }
         g = Polynomial(2*dof, terms=terms)
         alg = LieAlgebra(dof)
-        self.assert_(alg.is_diagonal_polynomial(g))
+        self.assertTrue(alg.is_diagonal_polynomial(g))
 
 class ClassicalToSemiclassicalTest(unittest.TestCase):
 
@@ -101,28 +101,28 @@ class ClassicalToSemiclassicalTest(unittest.TestCase):
 
         #form the poisson bracket and ensure non-zero
         pb_a_b = alg.poisson_bracket(a, b)
-        self.assert_(pb_a_b)
+        self.assertTrue(pb_a_b)
 
         #make the corresponding semiclassical algebra
         sem = SemiclassicalLieAlgebra(alg.dof())
 
         #make a conversion substitution
-        destination = [sem.coordinate_monomial(i) for i in xrange(alg.n_vars())]
+        destination = [sem.coordinate_monomial(i) for i in range(alg.n_vars())]
 
         #conver the two polynomials
         sa = a.substitute(destination)
         sb = b.substitute(destination)
         sem.check_elt(sa)
         sem.check_elt(sb)
-        self.assert_(len(sa) == len(a))
-        self.assert_(len(sb) == len(b))
+        self.assertTrue(len(sa) == len(a))
+        self.assertTrue(len(sb) == len(b))
 
         #form the moyal bracket
         mb_a_b = sem.moyal_bracket(sa, sb)
 
         #convert the earlier poisson bracket to moyal and check
         pb_a_b_convert = pb_a_b.substitute(destination)
-        self.assertEquals(mb_a_b, pb_a_b_convert)
+        self.assertEqual(mb_a_b, pb_a_b_convert)
 
     def test_example_conversion_via_class(self):
         #make a classical algebra
@@ -138,7 +138,7 @@ class ClassicalToSemiclassicalTest(unittest.TestCase):
 
         #form the poisson bracket and ensure non-zero
         pb_a_b = cla.poisson_bracket(a, b)
-        self.assert_(pb_a_b)
+        self.assertTrue(pb_a_b)
 
         #make converter
         cla_to_sem = ClassicalToSemiclassical(cla)
@@ -149,15 +149,15 @@ class ClassicalToSemiclassicalTest(unittest.TestCase):
         sb = cla_to_sem(b)
         sem.check_elt(sa)
         sem.check_elt(sb)
-        self.assert_(len(sa) == len(a))
-        self.assert_(len(sb) == len(b))
+        self.assertTrue(len(sa) == len(a))
+        self.assertTrue(len(sb) == len(b))
 
         #form the moyal bracket
         mb_a_b = sem.moyal_bracket(sa, sb)
 
         #convert the earlier poisson bracket to moyal and check
         pb_a_b_convert = cla_to_sem(pb_a_b)
-        self.assertEquals(mb_a_b, pb_a_b_convert)
+        self.assertEqual(mb_a_b, pb_a_b_convert)
 
 class PoissonMoyal(unittest.TestCase):
 
@@ -167,7 +167,7 @@ class PoissonMoyal(unittest.TestCase):
         q1, p1 = alg.q(1), alg.p(1)
         a = q0**2 + 2.0*q0*p0 + q1*p1
         b = q0 + q0*p0**3 + p1
-        print alg.bracket(a, b), 'test here please'
+        print((alg.bracket(a, b), 'test here please'))
 
     def test_moyal_bracket(self):
         alg = SemiclassicalLieAlgebra(2)
@@ -176,7 +176,7 @@ class PoissonMoyal(unittest.TestCase):
         hbar = alg.h_bar()
         a = q0**2 + 2.0*q0*p0 + q1*p1
         b = q0 + q0*p0**3 + p1*hbar
-        print alg.bracket(a, b), 'test here please'
+        print((alg.bracket(a, b), 'test here please'))
 
     def test_moyal_bracket_via_product(self):
         alg = SemiclassicalLieAlgebra(2)
@@ -187,10 +187,10 @@ class PoissonMoyal(unittest.TestCase):
         b = q0 + q0*p0**3 + p1*hbar
         moy_ab = alg.moyal_bracket(a, b)
         moy_ab_prod = alg.moyal_bracket_via_product(a, b)
-        print moy_ab
-        print moy_ab_prod
-        print 'test here please'
-        self.assertEquals(moy_ab_prod, moy_ab)
+        print(moy_ab)
+        print(moy_ab_prod)
+        print('test here please')
+        self.assertEqual(moy_ab_prod, moy_ab)
 
 class MoyalBracketIsLieBracket(unittest.TestCase):
 
@@ -205,14 +205,14 @@ class MoyalBracketIsLieBracket(unittest.TestCase):
         yield (a, b, c)
 
     def _test_identity(self, lhs, rhs):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             dof = 2*random.randint(1, 4)
             alg = SemiclassicalLieAlgebra(dof)
             vars = alg.n_vars()
             for a, b, c in self._gen_arguments(alg):
                 left = lhs(alg, a, b, c)
                 right = rhs(alg, a, b, c)
-                self.assert_(_eq(left, right), 
+                self.assertTrue(_eq(left, right), 
                              '\nLHS:%s\n\nRHS:%s\n'%(left, right))
 
     def test_moyal_linear_in_first_mul(self):
@@ -289,22 +289,22 @@ class MoyalBracketIsLieBracket(unittest.TestCase):
         def jacobi_lhs(alg, a, b, c):
             mb = alg.moyal_bracket
             return mb(a, mb(b, c))+mb(b, mb(c, a))+mb(c, mb(a, b))
-        for case in xrange(1+int(n_cases/2)):
+        for case in range(1+int(n_cases/2)):
             dof = 2*random.randint(1, 4)
             alg = SemiclassicalLieAlgebra(dof)
             vars = alg.n_vars()
             a = rand_poly(vars, max_power=4, max_terms=5, max_coeff=0.5)
             b = rand_poly(vars, max_power=4, max_terms=5, max_coeff=0.5)
             c = rand_poly(vars, max_power=4, max_terms=5, max_coeff=0.5)
-            self.assert_(_eq(jacobi_lhs(alg, a, b, c), alg.zero(), tol=5.0e-8))
+            self.assertTrue(_eq(jacobi_lhs(alg, a, b, c), alg.zero(), tol=5.0e-8))
 
     def test_moyal_self(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             dof = random.randint(1, 5)
             alg = SemiclassicalLieAlgebra(dof)
             vars = alg.n_vars()
             a = rand_poly(vars)
-            self.assert_(_eq(alg.moyal_bracket(a, a), alg.zero(), tol=1.0e-8))
+            self.assertTrue(_eq(alg.moyal_bracket(a, a), alg.zero(), tol=1.0e-8))
 
 def suite():
     suites = []
@@ -314,7 +314,7 @@ def suite():
         suites.append(unittest.makeSuite(PoissonMoyal))
         suites.append(unittest.makeSuite(MoyalBracketIsLieBracket))
     else:
-        print 'Semiclassical unit tests supressed for speed [see LieAlgebraTest.suite]'
+        print('Semiclassical unit tests supressed for speed [see LieAlgebraTest.suite]')
     suites.append(unittest.makeSuite(Diagonal))
     return unittest.TestSuite(suites)
 

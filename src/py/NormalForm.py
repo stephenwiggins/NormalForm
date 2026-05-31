@@ -65,7 +65,7 @@ def truncated_poly(lie_algebra, p, max_grade=None):
     if max_grade == None:
         max_grade = lie_algebra.grade(p)
     s = []
-    for grade in xrange(0, max_grade+1):
+    for grade in range(0, max_grade+1):
         g = lie_algebra.isograde(p, grade)
         if g:
             s.append('[grade %d]%s'%(grade, lie_algebra.display(g)))
@@ -236,7 +236,7 @@ class NormalForm:
 
         """
         cvec_in_rvec = []
-        for i in xrange(len(vp)):
+        for i in range(len(vp)):
             cvec_in_rvec.append(vp[i].substitute(self.c_in_terms_of_r))
         cvec_in_cvec = []
         for r_in_c_i in self.r_in_terms_of_c:
@@ -264,7 +264,7 @@ class NormalForm:
         # taken care of _WITHIN_ the triangle procedure.
         #
 
-        for step in xrange(0, steps + 1):
+        for step in range(0, steps + 1):
             h_term = self.alg.isograde(self.h_dc, step + 2)
             k_term, w_term = tri.compute_normal_form_and_generating_function(h_term)
             logger.info('Resulting normal form terms:')
@@ -445,7 +445,7 @@ class NormalForm:
 
         steps = self.desired_grade-2 #1+self.h_dc.grade()-3 #check!
         res = []
-        for s in xrange(self.alg.n_vars()):
+        for s in range(self.alg.n_vars()):
             #do we request a coordinate change in h-bar???
             logger.info('complex coord change, component %d of %d', s, self.alg.n_vars())
             xs = self.alg.coordinate_monomial(s)
@@ -480,7 +480,7 @@ class NormalForm:
 
         steps = self.desired_grade-2 #self.h_dc.grade()-2 #check!
         res = []
-        for s in xrange(self.alg.n_vars()):
+        for s in range(self.alg.n_vars()):
             logger.info('complex coord change, component %d of %d', s, self.alg.n_vars())
             xs = self.alg.coordinate_monomial(s)
             sp = [0,]*(self.alg.n_vars())
@@ -526,7 +526,7 @@ class NormalForm:
 
         steps = self.desired_grade-2 #1+self.h_dc.grade()-3 #check!
         res = []
-        for s in xrange(self.alg.n_vars()):
+        for s in range(self.alg.n_vars()):
             logger.info('complex coord change, component %d of %d', s, self.alg.n_vars())
             xs = self.alg.coordinate_monomial(s)
             sp = [0,]*(self.alg.n_vars())
@@ -559,7 +559,7 @@ class NormalForm:
         
         steps = self.desired_grade-2 #self.h_dc.grade()-2 #check!
         res = []
-        for s in xrange(self.alg.n_vars()):
+        for s in range(self.alg.n_vars()):
             logger.info('complex coord change, component %d of %d', s, self.alg.n_vars())
             xs = self.alg.coordinate_monomial(s)
             sp = [0,]*(self.alg.n_vars())
@@ -671,7 +671,7 @@ class NormalForm:
         is_xxpp_format = True
         # equi_to_tvec is J.Hessian
         hess = []
-        for i in xrange(self.h_er.n_vars()):
+        for i in range(self.h_er.n_vars()):
             hess.append(self.h_er.diff(i))
         e2tv = [ poly.substitute(hess) for poly in  self.dia.matrix_as_vector_of_row_polynomials(self.dia.skew_symmetric_matrix())]
         write_file_vec_polynomials("equi_to_tvec.vec",e2tv,is_xxpp_format)
@@ -679,7 +679,7 @@ class NormalForm:
 
         #These are dim dof, is_xxpp_format doesn't apply
         i2f = []
-        for i in xrange(self.h_ir.n_vars()):
+        for i in range(self.h_ir.n_vars()):
             i2f.append(self.h_ir.diff(i))
         write_file_vec_polynomials("ints_to_freq.vec", i2f, False)
                        

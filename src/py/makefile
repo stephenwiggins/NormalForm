@@ -4,7 +4,7 @@
 all:	compile check lint test
 
 compile:
-	python2.3 ./ImportAllOptimized.py -O .
+	python3 ./ImportAllOptimized.py -O .
 
 check:
 	pychecker *.py

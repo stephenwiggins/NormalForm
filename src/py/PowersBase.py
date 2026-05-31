@@ -35,58 +35,58 @@ class PowersBase:
     #    raise NotImplementedError, 'Abstract base'
 
     def __repr__(self):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __len__(self):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __cmp__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __hash__(self):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __eq__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __lt__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __le__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __gt__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __ge__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __call__(self, args):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __getslice__(self, i, j):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __getitem__(self, i):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __mul__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def __pow__(self, other):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def degree(self):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def diff(self, var):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def to_tuple(self):
-        raise NotImplementedError, 'Abstract base'
+        raise NotImplementedError('Abstract base')
 
     def number_of_variables(self):
         return len(self)

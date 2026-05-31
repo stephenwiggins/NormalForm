@@ -28,7 +28,7 @@ class EquilibriumPoint(unittest.TestCase):
         """
         sb = new_random_system_bath(0, 1.0, imag_harm_freq_barr, 0.6, random_seed=54321)
         h_er = sb.hamiltonian_real()
-        self.assert_(not h_er.homogeneous(0))
+        self.assertTrue(not h_er.homogeneous(0))
 
     def test_no_linear_term(self):
         """
@@ -38,7 +38,7 @@ class EquilibriumPoint(unittest.TestCase):
         """
         sb = new_random_system_bath(0, 1.0, imag_harm_freq_barr, 0.6, random_seed=54321)
         h_er = sb.hamiltonian_real()
-        self.assert_(not h_er.homogeneous(1))
+        self.assertTrue(not h_er.homogeneous(1))
 
 class Saddle(unittest.TestCase):
     """
@@ -50,8 +50,8 @@ class Saddle(unittest.TestCase):
     def test_zero_and_first_degree(self):
         sb = new_random_system_bath(0, 1.0, imag_harm_freq_barr, 0.6, random_seed=54321)
         h = sb.hamiltonian_real()
-        self.assert_(h.homogeneous(0) == Polynomial(2))
-        self.assert_(h.homogeneous(1) == Polynomial(2))
+        self.assertTrue(h.homogeneous(0) == Polynomial(2))
+        self.assertTrue(h.homogeneous(1) == Polynomial(2))
 
     def test_quadratic_terms(self):
         tolerance = 1.0e-15
@@ -67,13 +67,13 @@ class Saddle(unittest.TestCase):
         assert len(h) == (3) + (2*n) + (n) #system+bath+coupling
 
         h_2 = h.homogeneous(2)
-        self.assert_(h_2) #non-zero
+        self.assertTrue(h_2) #non-zero
         diag = Diagonalizer(lie)
         eig = diag.compute_eigen_system(h_2, tolerance)
         diag.compute_diagonal_change()
 
         eq_type = eig.get_equilibrium_type()
-        self.assertEquals(eq_type, 's')
+        self.assertEqual(eq_type, 's')
 
         eigs = [pair.val for pair in eig.get_raw_eigen_value_vector_pairs()]
 
@@ -87,16 +87,16 @@ class Saddle(unittest.TestCase):
         h_2_diag = h_2.substitute(sub_diag_into_equi)
         h_2_comp = h_2_diag.substitute(sub_complex_into_real)
         h_2_comp = h_2_comp.with_small_coeffs_removed(tolerance)
-        self.assert_(lie.is_diagonal_polynomial(h_2_comp))
+        self.assertTrue(lie.is_diagonal_polynomial(h_2_comp))
 
         h_diag = h.substitute(sub_diag_into_equi)
         h_comp = h_diag.substitute(sub_complex_into_real)
         h_comp = h_comp.with_small_coeffs_removed(tolerance)
 
         h_comp_2 = h_comp.homogeneous(2)
-        self.assert_((h_comp_2-h_2_comp).l1_norm() < tolerance,
+        self.assertTrue((h_comp_2-h_2_comp).l1_norm() < tolerance,
                      '%s != %s'%(h_comp_2, h_2_comp))
-        self.assert_(not h_comp.homogeneous(1))
+        self.assertTrue(not h_comp.homogeneous(1))
 
 class SaddleCentre(unittest.TestCase):
     """
@@ -113,8 +113,8 @@ class SaddleCentre(unittest.TestCase):
         sb = new_random_system_bath(n_bath_modes,
                                     1.0, imag_harm_freq_barr, 0.6, random_seed=54321)
         h = sb.hamiltonian_real()
-        self.assert_(h.homogeneous(0) == Polynomial(n_bath_modes*2+2))
-        self.assert_(h.homogeneous(1) == Polynomial(n_bath_modes*2+2))
+        self.assertTrue(h.homogeneous(0) == Polynomial(n_bath_modes*2+2))
+        self.assertTrue(h.homogeneous(1) == Polynomial(n_bath_modes*2+2))
 
     def test_quadratic_terms(self):
         n_bath_modes = 1
@@ -131,13 +131,13 @@ class SaddleCentre(unittest.TestCase):
         assert len(h) == (3) + (2*n_bath_modes) + (n_bath_modes)
 
         h_2 = h.homogeneous(2)
-        self.assert_(h_2) #non-zero
+        self.assertTrue(h_2) #non-zero
         diag = Diagonalizer(lie)
         eig = diag.compute_eigen_system(h_2, tolerance)
         diag.compute_diagonal_change()
 
         eq_type = eig.get_equilibrium_type()
-        self.assertEquals(eq_type, 'sc')
+        self.assertEqual(eq_type, 'sc')
 
         eigs = [pair.val for pair in eig.get_raw_eigen_value_vector_pairs()]
 
@@ -151,16 +151,16 @@ class SaddleCentre(unittest.TestCase):
         h_2_diag = h_2.substitute(sub_diag_into_equi)
         h_2_comp = h_2_diag.substitute(sub_complex_into_real)
         h_2_comp = h_2_comp.with_small_coeffs_removed(tolerance)
-        self.assert_(lie.is_diagonal_polynomial(h_2_comp))
+        self.assertTrue(lie.is_diagonal_polynomial(h_2_comp))
 
         h_diag = h.substitute(sub_diag_into_equi)
         h_comp = h_diag.substitute(sub_complex_into_real)
         h_comp = h_comp.with_small_coeffs_removed(tolerance)
 
         h_comp_2 = h_comp.homogeneous(2)
-        self.assert_((h_comp_2-h_2_comp).l1_norm() < tolerance,
+        self.assertTrue((h_comp_2-h_2_comp).l1_norm() < tolerance,
                      '%s != %s'%(h_comp_2, h_2_comp))
-        self.assert_(not h_comp.homogeneous(1))
+        self.assertTrue(not h_comp.homogeneous(1))
 
 class SaddleCentreCentre(unittest.TestCase):
     """
@@ -176,8 +176,8 @@ class SaddleCentreCentre(unittest.TestCase):
         sb = new_random_system_bath(n_bath_modes,
                                     1.0, imag_harm_freq_barr, 0.6, random_seed=54321)
         h = sb.hamiltonian_real()
-        self.assert_(h.homogeneous(0) == Polynomial(n_bath_modes*2+2))
-        self.assert_(h.homogeneous(1) == Polynomial(n_bath_modes*2+2))
+        self.assertTrue(h.homogeneous(0) == Polynomial(n_bath_modes*2+2))
+        self.assertTrue(h.homogeneous(1) == Polynomial(n_bath_modes*2+2))
 
     def test_quadratic_terms(self):
         n_bath_modes = 2
@@ -194,13 +194,13 @@ class SaddleCentreCentre(unittest.TestCase):
         assert len(h) == (3) + (2*n_bath_modes) + (n_bath_modes)
 
         h_2 = h.homogeneous(2)
-        self.assert_(h_2) #non-zero
+        self.assertTrue(h_2) #non-zero
         diag = Diagonalizer(lie)
         eig = diag.compute_eigen_system(h_2, tolerance)
         diag.compute_diagonal_change()
 
         eq_type = eig.get_equilibrium_type()
-        self.assertEquals(eq_type, 'scc')
+        self.assertEqual(eq_type, 'scc')
 
         eigs = [pair.val for pair in eig.get_raw_eigen_value_vector_pairs()]
 
@@ -214,16 +214,16 @@ class SaddleCentreCentre(unittest.TestCase):
         h_2_diag = h_2.substitute(sub_diag_into_equi)
         h_2_comp = h_2_diag.substitute(sub_complex_into_real)
         h_2_comp = h_2_comp.with_small_coeffs_removed(tolerance)
-        self.assert_(lie.is_diagonal_polynomial(h_2_comp))
+        self.assertTrue(lie.is_diagonal_polynomial(h_2_comp))
 
         h_diag = h.substitute(sub_diag_into_equi)
         h_comp = h_diag.substitute(sub_complex_into_real)
         h_comp = h_comp.with_small_coeffs_removed(tolerance)
 
         h_comp_2 = h_comp.homogeneous(2)
-        self.assert_((h_comp_2-h_2_comp).l1_norm() < tolerance,
+        self.assertTrue((h_comp_2-h_2_comp).l1_norm() < tolerance,
                      '%s != %s'%(h_comp_2, h_2_comp))
-        self.assert_(not h_comp.homogeneous(1))
+        self.assertTrue(not h_comp.homogeneous(1))
 
 def suite():
     suites = []

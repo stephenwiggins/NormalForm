@@ -24,10 +24,10 @@ def importAllModulesInPath_(file_path, do_optimize=0):
     for file_name in file_names:
         parts = file_name.split('/')
         module_name = parts[-1][:-3]
-        print file_name, module_name
+        print((file_name, module_name))
         if do_optimize:
-            cmd("python2.3 -O -c 'import %s\n'"% module_name)
-        cmd("python2.3 -c 'import %s\n'"% module_name)
+            cmd("python3 -O -c 'import %s\n'"% module_name)
+        cmd("python3 -c 'import %s\n'"% module_name)
 
 if __name__ == '__main__':
     do_optimize = 0
@@ -35,9 +35,9 @@ if __name__ == '__main__':
         if sys.argv[1] == '-O':
             paths = sys.argv[2:]
             do_optimize = 1
-            print 'optimized'
+            print('optimized')
         else:
-            print 'standard'
+            print('standard')
             paths = sys.argv[1:]
         for path in paths:
             importAllModulesInPath_(path, do_optimize=do_optimize)

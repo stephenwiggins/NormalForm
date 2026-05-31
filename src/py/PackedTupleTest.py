@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.3
+#!/usr/bin/env python3
 
 # This software is Copyright (C) 2004-2008  Bristol University
 # and is released under the GNU General Public License version 2.
@@ -23,38 +23,38 @@ class Examples(unittest.TestCase):
         bits = 4
         for eg in self.examples:
             packed = PackedTuple(eg, bits=bits)
-            self.assertEquals(len(packed), len(eg))
+            self.assertEqual(len(packed), len(eg))
 
     def test_to_list(self):
         bits = 5
         for eg in self.examples:
             packed = PackedTuple(eg, bits=bits)
-            self.assertEquals(packed.to_list(), list(eg))
+            self.assertEqual(packed.to_list(), list(eg))
 
     def test_to_tuple(self):
         bits = 5
         for eg in self.examples:
             packed = PackedTuple(eg, bits=bits)
-            self.assertEquals(packed.to_tuple(), tuple(eg))
+            self.assertEqual(packed.to_tuple(), tuple(eg))
 
     def test_iter(self):
         bits = 5
         for eg in self.examples:
             packed = PackedTuple(eg, bits=bits)
             t = tuple([x for x in packed])
-            self.assertEquals(t, eg)
+            self.assertEqual(t, eg)
 
     def test_str(self):
         bits = 4
         for eg in self.examples:
             packed = PackedTuple(eg, bits=bits)
-            self.assertEquals(str(packed), str(eg))
+            self.assertEqual(str(packed), str(eg))
 
     def test_repr(self):
         bits = 4
         for eg in self.examples:
             packed = PackedTuple(eg, bits=bits)
-            self.assertEquals(repr(packed), 'PackedTuple(%s, bits=%d)'%(repr(eg),
+            self.assertEqual(repr(packed), 'PackedTuple(%s, bits=%d)'%(repr(eg),
                                                                         bits))
 
     def test_get_item(self):
@@ -62,7 +62,7 @@ class Examples(unittest.TestCase):
         for eg in self.examples:
             packed = PackedTuple(eg)
             for i, x in enumerate(eg):
-                self.assertEquals(x, packed[i])
+                self.assertEqual(x, packed[i])
 
     def test_get_slice(self):
         for eg in self.examples:
@@ -71,7 +71,7 @@ class Examples(unittest.TestCase):
                 for j in range(i, len(eg)):
                     s = packed[i:j]
                     for k, x in enumerate(eg[i:j]):
-                        self.assertEquals(s[k], x)
+                        self.assertEqual(s[k], x)
 
     def test_set_item_same(self):
         """__setitem__ with same item gives no change."""
@@ -79,7 +79,7 @@ class Examples(unittest.TestCase):
             packed = PackedTuple([0 for x in eg])
             for i, x in enumerate(eg):
                 packed[i] = x
-                self.assertEquals(x, packed[i])
+                self.assertEqual(x, packed[i])
 
     def test_set_item_zero(self):
         """__setitem__ with zero gives zero."""
@@ -87,12 +87,12 @@ class Examples(unittest.TestCase):
             packed = PackedTuple(eg)
             for i, x in enumerate(eg):
                 packed[i] = 0
-                self.assertEquals(0, packed[i])
+                self.assertEqual(0, packed[i])
 
     def test_hash(self):
         for eg in self.examples:
             packed = PackedTuple(eg)
-            self.assertEquals(hash(packed), hash(eg))
+            self.assertEqual(hash(packed), hash(eg))
 
 class TupleLike(unittest.TestCase):
 
@@ -101,25 +101,25 @@ class TupleLike(unittest.TestCase):
     def test_eq_to_tuple(self):
         t = (0, 1, 2, 3, 4)
         p = PackedTuple(t, bits=4)
-        self.assert_(t == p)
+        self.assertTrue(t == p)
 
     def test_as_dict_key(self):
         t = (0, 1, 2, 3, 4)
         p = PackedTuple(t, bits=4)
         d = {}
         d[p] = -99.0
-        self.assert_(d.has_key(t))
-        self.assert_(d[t] == d[p])
-        self.assert_(d[t] == -99.0)
+        self.assertTrue(t in d)
+        self.assertTrue(d[t] == d[p])
+        self.assertTrue(d[t] == -99.0)
 
 class Bits(unittest.TestCase):
 
     def test_value(self):
-        for bits in xrange(1, max_bits):
+        for bits in range(1, max_bits):
             p = PackedTuple((), bits=bits)
             m = p.max_size()
             p = PackedTuple((m,), bits=bits)
-            self.assertEquals(p._bits, bits)
+            self.assertEqual(p._bits, bits)
 
 class EmptyTuple(unittest.TestCase):
 
@@ -131,12 +131,12 @@ class EmptyTuple(unittest.TestCase):
     def test_len(self):
         for i in range(1, max_bits+1):
             empt = PackedTuple((), bits=i)
-            self.assertEquals(len(empt), len(()))
+            self.assertEqual(len(empt), len(()))
 
     def test_hash(self):
         for i in range(1, max_bits+1):
             empt = PackedTuple((), bits=i)
-            self.assertEquals(hash(empt), hash(()))
+            self.assertEqual(hash(empt), hash(()))
 
 class BadTuple(unittest.TestCase):
 
@@ -152,7 +152,7 @@ class BadTuple(unittest.TestCase):
             except NegativeIntegerError:
                 pass
             else:
-                self.assert_(0, 'Should throw exception at negative item.')
+                self.assertTrue(0, 'Should throw exception at negative item.')
 
     def test_too_large_for_bits(self):
         """Ensure that exceeding the number of bits throws error."""
@@ -160,13 +160,13 @@ class BadTuple(unittest.TestCase):
 
     def test_negative_set_item(self):
         """Ensure that we cannot try to set a negative value."""
-        p = PackedTuple(range(10))
+        p = PackedTuple(list(range(10)))
         try:
             p[0] = -1
         except NegativeIntegerError:
             pass
         else:
-            self.assert_(0, 'Cannot set a negative item.')
+            self.assertTrue(0, 'Cannot set a negative item.')
 
 class BadBits(unittest.TestCase):
 
@@ -177,22 +177,22 @@ class BadBits(unittest.TestCase):
             except NonPositiveBitsError:
                 pass
             else:
-                self.assert_(0, 'Bits must be strictly positive.')
+                self.assertTrue(0, 'Bits must be strictly positive.')
 
     def test_huge_bits(self):
         try:
-            p = PackedTuple(range(500000), bits=100)
+            p = PackedTuple(list(range(500000)), bits=100)
         except TooManyBitsError:
             pass
         else:
-            self.assert_(0, 'Maximum 31 bits with this implementation.')
+            self.assertTrue(0, 'Maximum 31 bits with this implementation.')
 
 class MaxSize(unittest.TestCase):
 
     def test_value(self):
         for bits in range(1, max_bits+1):
             p = PackedTuple((), bits=bits)
-            self.assertEquals(p.max_size(), (1<<bits)-1)
+            self.assertEqual(p.max_size(), (1<<bits)-1)
 
     def test_store(self):
         for bits in range(1, max_bits+1):
@@ -201,7 +201,7 @@ class MaxSize(unittest.TestCase):
             t = tuple([i%(m+1) for i in range(66)])
             p = PackedTuple(t, bits=bits)
             for i in range(len(p)):
-                self.assertEquals(p[i], i%(m+1), '%d'%i)
+                self.assertEqual(p[i], i%(m+1), '%d'%i)
 
 #test_len
 

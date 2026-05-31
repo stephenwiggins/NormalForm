@@ -32,17 +32,17 @@ def binomial(n, k):
     if k < 0 or k > n: raise ValueError
     t = 1
     if k < (n-k):
-        for i in xrange(n, (n-k), -1):
+        for i in range(n, (n-k), -1):
             t *= i
             t /= (n-i+1)
     else:
-        for i in xrange(n, k, -1):
+        for i in range(n, k, -1):
             t *= i
             t /= (n-i+1)
     return t
 
 def factorial(x):
     r = 1
-    for i in xrange(2, x+1):
+    for i in range(2, x+1):
         r *= i
     return r

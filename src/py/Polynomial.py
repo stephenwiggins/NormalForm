@@ -77,7 +77,7 @@ class Polynomial:
         self._n_vars = n_vars
         self._terms = Polynomial._new_dict()
         if terms:
-            for po, co in terms.iteritems():
+            for po, co in list(terms.items()):
                 self[po] = co #secure; cannot set zero
 
     def copy(self):
@@ -87,7 +87,7 @@ class Polynomial:
 
         """
         res = Polynomial(self._n_vars)
-        for powers, coeff in self._terms.iteritems():
+        for powers, coeff in list(self._terms.items()):
             assert coeff != 0.0 #security
             res[powers] = coeff
         return res
@@ -137,7 +137,7 @@ class Polynomial:
         """
         assert index >= 0
         assert index < n_vars
-        powers = [int(i == index) for i in xrange(n_vars)]
+        powers = [int(i == index) for i in range(n_vars)]
         return Polynomial.Monomial(tuple(powers))
     CoordinateMonomial = staticmethod(CoordinateMonomial)
 
@@ -174,7 +174,7 @@ class Polynomial:
         if self._terms:
             res += ', terms={ \\\n'
             lis = []
-            for powers, coeff in self._terms.iteritems():
+            for powers, coeff in list(self._terms.items()):
                 lis.append('    %s: %s' % (repr(powers), repr(coeff)))
             res += ', \\\n'.join(lis)
             res += '}'
@@ -195,11 +195,11 @@ class Polynomial:
 
     def powers_and_coefficients(self):
         """Return an iterator over the (powers, coefficient)-pairs."""
-        return self._terms.iteritems()
+        return iter(list(self._terms.items()))
 
     def coeffs_as_list(self):
         """This could be done as return list(self._terms.itervalues())."""
-        return list(self._terms.itervalues())
+        return list(self._terms.values())
 
     def __len__(self):
         """
@@ -218,7 +218,7 @@ class Polynomial:
     def degree(self):
         """Homogeneous degree of the polynomial; maximal degree of powers."""
         res = 0
-        for powers, coeff in self._terms.iteritems():
+        for powers, coeff in list(self._terms.items()):
             assert coeff != 0.0 #security
             deg = powers.degree()
             if deg > res:
@@ -228,7 +228,7 @@ class Polynomial:
     def l1_norm(self):
         """The $l_1$-norm; sum of absolute values of coefficients."""
         res = 0.0
-        for coeff in self._terms.itervalues():
+        for coeff in list(self._terms.values()):
             assert coeff != 0.0 #security
             res += abs(coeff)
         return res
@@ -236,7 +236,7 @@ class Polynomial:
     def l_infinity_norm(self):
         """The $l_\\infty$-norm; maximum absolute value of coefficient."""
         res = 0.0
-        for coeff in self._terms.itervalues():
+        for coeff in list(self._terms.values()):
             assert coeff != 0.0 #security
             if abs(coeff) > res:
                 res = abs(coeff)
@@ -264,7 +264,7 @@ class Polynomial:
             else:
                 return False
         else:
-            raise TypeError, 'Must compare Polynomial with similar.'
+            raise TypeError('Must compare Polynomial with similar.')
 
     ####################################################################
     # Item access
@@ -278,9 +278,9 @@ class Polynomial:
         """
         assert isinstance(term, Powers)
         if len(term)==self._n_vars:
-            return self._terms.has_key(term)
+            return term in self._terms
         else:
-            raise IndexError, "Keys must have correct number of variables"
+            raise IndexError("Keys must have correct number of variables")
 
     def __getitem__(self, key):
         """
@@ -292,7 +292,7 @@ class Polynomial:
         if len(key) == self._n_vars:
             return self._terms.get(key, 0.0) #self._terms[key]
         else:
-            raise IndexError, "Keys must have correct number of variables"
+            raise IndexError("Keys must have correct number of variables")
 
     def __setitem__(self, key, item):
         """
@@ -304,21 +304,21 @@ class Polynomial:
         assert isinstance(key, Powers), 'Polynomials are Powers -> coeff'
         if len(key) == self._n_vars:
             if item == 0.0:
-                if self._terms.has_key(key):
+                if key in self._terms:
                     del self._terms[key]
                 else:
                     pass #IMPORTANT! WE NEVER STORE ZERO ENTRIES.
             else:
                 self._terms[key] = item
         else:
-            raise IndexError, "Keys must have correct number of variables"
+            raise IndexError("Keys must have correct number of variables")
 
     def __delitem__(self, key):
         assert isinstance(key, Powers)
         if len(key) == self._n_vars:
             self._terms.__delitem__(key)
         else:
-            raise IndexError, "Keys must have correct number of variables"
+            raise IndexError("Keys must have correct number of variables")
 
     ####################################################################
     # Property tests
@@ -328,8 +328,8 @@ class Polynomial:
         if len(self._terms) > 1:
             return False
         if len(self._terms):
-            monomial = self._terms.keys()[0]
-            for i in xrange(len(monomial)):
+            monomial = list(self._terms.keys())[0]
+            for i in range(len(monomial)):
                 if monomial[i] != 0:
                     return False
         return True
@@ -343,7 +343,7 @@ class Polynomial:
         if not self._terms:
             return True
         deg = degree
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0
             if deg == -1:
                 deg = m.degree()
@@ -366,12 +366,12 @@ class Polynomial:
         """
         if len(args) == self._n_vars:
             result = 0.0
-            for m, c in self._terms.iteritems():
+            for m, c in list(self._terms.items()):
                 assert c != 0.0 #security
                 result += c * m(args)
             return result
         else:
-            raise IndexError, "Wrong number of arguments"
+            raise IndexError("Wrong number of arguments")
 
     ####################################################################
     # Arithmetic operations
@@ -379,7 +379,7 @@ class Polynomial:
 
     def __neg__(self):
         res = Polynomial(self._n_vars)
-        for m, c, in self._terms.iteritems():
+        for m, c, in list(self._terms.items()):
             assert c != 0.0 #security
             res[m] = -c
         return res
@@ -387,9 +387,9 @@ class Polynomial:
     def __mul__(self, other):
         assert isinstance(other, Polynomial)
         res = Polynomial(self._n_vars)
-        for ms, cs in self._terms.iteritems():
+        for ms, cs in list(self._terms.items()):
             assert cs != 0.0 #security
-            for mo, co in other._terms.iteritems():
+            for mo, co in list(other._terms.items()):
                 assert co != 0.0 #security
                 t = ms * mo
                 if res.has_term(t):
@@ -405,7 +405,7 @@ class Polynomial:
 
         """
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0 #security
             res[m] = other * c
         return res
@@ -437,7 +437,7 @@ class Polynomial:
         """
         assert isinstance(e, int)
         assert e >= 0
-        mask = 1L
+        mask = 1
         while mask <= e:
             mask <<= 1
         mask >>= 1  # position of e's most-significant bit
@@ -459,16 +459,16 @@ class Polynomial:
         """
         assert isinstance(other, Polynomial), other.__class__
         if other is self:
-            for m in self._terms.keys():
+            for m in list(self._terms.keys()):
                 self._terms[m] *= 2.0
             return self
         if self._n_vars == other._n_vars:
-            for m, c in other._terms.iteritems():
+            for m, c in list(other._terms.items()):
                 assert c != 0.0 #security
                 self[m] += c
             return self
         else:
-            raise IndexError, "Number of variables must match"
+            raise IndexError("Number of variables must match")
 
     def __add__(self, other):
         """
@@ -490,7 +490,7 @@ class Polynomial:
             res += b
             return res
         else:
-            raise IndexError, "Number of variables must match"
+            raise IndexError("Number of variables must match")
 
     def __isub__(self, other):
         """
@@ -502,16 +502,16 @@ class Polynomial:
         """
         assert isinstance(other, Polynomial)
         if other is self:
-            for m in self._terms.keys():
+            for m in list(self._terms.keys()):
                 del self._terms[m]
             return self
         if self._n_vars == other._n_vars:
-            for m, c in other._terms.iteritems():
+            for m, c in list(other._terms.items()):
                 assert c != 0.0 #security
                 self[m] -= c
             return self
         else:
-            raise IndexError, "Number of variables must match"
+            raise IndexError("Number of variables must match")
 
     def __sub__(self, other):
         """
@@ -547,9 +547,9 @@ class Polynomial:
             for a in args[1:]:
                 assert isinstance(a, Polynomial)
                 if a.n_vars() != result_space:
-                    raise IndexError, 'incompatible substitution'
+                    raise IndexError('incompatible substitution')
             result = Polynomial(result_space)
-            for po, co in self._terms.iteritems():
+            for po, co in list(self._terms.items()):
                 res = Polynomial.One(result_space) #ensure poly
                 assert co != 0.0 #security
                 for i in range(len(args)):
@@ -559,7 +559,7 @@ class Polynomial:
             assert isinstance(result, Polynomial)
             return result
         else:
-            raise IndexError, "Wrong number of arguments"
+            raise IndexError("Wrong number of arguments")
 
     def diff(self, var):
         """
@@ -569,7 +569,7 @@ class Polynomial:
         """
         assert isinstance(var, int)
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0 #security
             dc, dm = m.diff(var)
             if dc == 0.0:
@@ -596,7 +596,7 @@ class Polynomial:
         if pow == 1:
             return self.diff(var)
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0 #security
             dc, dm = m.diff_pow(var, pow)
             if dc == 0.0:
@@ -620,7 +620,7 @@ class Polynomial:
         """
         assert isinstance(other, Polynomial)
         if (self._n_vars)%2:
-            raise IndexError, "Poisson bracket not defined for odd num coords"
+            raise IndexError("Poisson bracket not defined for odd num coords")
         if self._n_vars == other._n_vars:
             res = Polynomial(self._n_vars)
             for i in range(0, self._n_vars, 2):
@@ -629,7 +629,7 @@ class Polynomial:
                 res += (p-q)
             return res
         else:
-            raise IndexError, "Number of variables must match"
+            raise IndexError("Number of variables must match")
 
     ####################################################################
     # Partitions
@@ -645,7 +645,7 @@ class Polynomial:
             up_to = degree+1
         assert degree < up_to
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0 #security
             if degree <= m.degree() < up_to:
                 res[m] = c
@@ -660,7 +660,7 @@ class Polynomial:
         """
         t = Polynomial(self._n_vars)
         f = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0 #security
             if pred(m):
                 t[m] = c
@@ -675,7 +675,7 @@ class Polynomial:
 
         """
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0
             if isinstance(c, float):
                 res[m] = c
@@ -690,7 +690,7 @@ class Polynomial:
 
         """
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0
             if isinstance(c, complex):
                 res[m] = c.imag
@@ -705,7 +705,7 @@ class Polynomial:
 
         """
         res = Polynomial(self._n_vars)
-        for m, c in self._terms.iteritems():
+        for m, c in list(self._terms.items()):
             assert c != 0.0 #security
             if abs(c) > tolerance:
                 res[m] = c

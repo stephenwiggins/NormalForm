@@ -45,11 +45,11 @@ class SparsePowers(PowersBase):
         assert isinstance(other, SparsePowers)
         if self._powers._len == other._powers._len:
             temp = dict(self._powers._i_to_e)
-            for i, p in other._powers._i_to_e.iteritems():
+            for i, p in list(other._powers._i_to_e.items()):
                 temp[i] = temp.get(i, 0) + p
             return SparsePowers(self._powers._len, temp)
         else:
-            raise IndexError, "Mismatched Powers lengths"
+            raise IndexError("Mismatched Powers lengths")
 
     def __pow__(self, other):
         """
@@ -60,7 +60,7 @@ class SparsePowers(PowersBase):
         if other<0:
             raise ValueError
         temp = {}
-        for i, p in self._powers.iteritems():
+        for i, p in list(self._powers.items()):
             assert p > 0
             temp[i] = p * other
         return SparsePowers(self._powers._len, temp)
@@ -74,7 +74,7 @@ class SparsePowers(PowersBase):
         Gives the degree of the Powers.  Efficient for sparse powers.
 
         """
-        return sum(self._powers._i_to_e.itervalues())
+        return sum(self._powers._i_to_e.values())
 
     def diff(self, var):
         """
@@ -84,7 +84,7 @@ class SparsePowers(PowersBase):
         """
         if var<0 or var>=self._powers._len:
             raise IndexError(var)
-        if self._powers.has_key(var):
+        if var in self._powers:
             d = dict(self._powers._i_to_e)
             p = self._powers[var]
             assert p > 0
@@ -106,12 +106,12 @@ class SparsePowers(PowersBase):
         assert pow > 0
         if var<0 or var>=self._powers._len:
             raise IndexError(var)
-        if self._powers.has_key(var):
+        if var in self._powers:
             p = self._powers[var]
             if pow <= p:
                 d = dict(self._powers._i_to_e)
                 c = p
-                for i in xrange(1, pow):
+                for i in range(1, pow):
                     c *= (p-i)
                 if pow == p:
                     del d[var]
@@ -166,8 +166,8 @@ class SparsePowers(PowersBase):
         """
         if len(self._powers) == len(args):
             result = 1.0
-            for i, p in self._powers._i_to_e.iteritems():
+            for i, p in list(self._powers._i_to_e.items()):
                 result *= args[i] ** p
             return result
         else:
-            raise IndexError, "Wrong number of arguments"
+            raise IndexError("Wrong number of arguments")

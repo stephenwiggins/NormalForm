@@ -56,11 +56,11 @@ def reorder_dof(inp, order):
     n_ints = len(order)
     if len(inp) == n_ints:
         # only dof terms, e.g. integrals
-        for i in xrange(n_ints):
+        for i in range(n_ints):
             out.append(inp[order[i]])
     else:
         # xpxp list
-        for i in xrange(n_ints):
+        for i in range(n_ints):
             out.append(inp[order[i]*2])
             out.append(inp[order[i]*2 +1])
         # check for Semi-Classical
@@ -90,15 +90,15 @@ def read_ascii_polynomial(istream, is_xxpp_format, order=None):
     lie algebra of one sort or another.
 
     """
-    line = istream.next()
+    line = next(istream)
     n_vars = int(line)
     assert n_vars >= 0
-    line = istream.next()
+    line = next(istream)
     n_monomials = int(line)
     assert n_monomials >= 0
     p = Polynomial(n_vars)
-    for i in xrange(n_monomials):
-        line = istream.next()
+    for i in range(n_monomials):
+        line = next(istream)
         elts = line.split(' ')
         elts = elts[:n_vars]+[' '.join(elts[n_vars:])]
         assert len(elts) == n_vars+1
@@ -153,18 +153,18 @@ def read_ascii_matrix(file_istr, is_xxpp_format):
     """
     Read a matrix from an input stream in ASCII format.
     """
-    line = file_istr.next()
+    line = next(file_istr)
     n_rows = int(line)
     assert n_rows >= 0
-    line = file_istr.next()
+    line = next(file_istr)
     n_cols = int(line)
     assert n_cols >= 0
     matrix = []
-    for i in xrange(n_rows):
-        line = file_istr.next()
+    for i in range(n_rows):
+        line = next(file_istr)
         elts = line[:-1].split(' ')
         row = []
-        for e in xrange(n_cols):
+        for e in range(n_cols):
             row.append(float(elts[e]))
         if is_xxpp_format:
             row = xxpp_to_xpxp(row)
@@ -194,7 +194,7 @@ def write_ascii_matrix(file_name, mat):
     file_ostr = open(file_name, 'w')
     file_ostr.write('%d\n'%len(mat))
     file_ostr.write('%d\n'%len(mat[1]))
-    for row in xrange(len(mat)):
+    for row in range(len(mat)):
         for col in mat[row]:
             file_ostr.write('%s '%repr(col))
         file_ostr.write('\n')
@@ -213,14 +213,14 @@ def read_ascii_vec_polynomials(istream, is_xxpp_format, order=None):
 
     @return: vector of polynomials.
     """
-    line = istream.next()
+    line = next(istream)
     n_vars = int(line)
     assert n_vars >= 0
-    line = istream.next()
+    line = next(istream)
     n_polys = int(line)
     assert n_polys >= 0
     poly_vec = []
-    for i in xrange(n_polys):
+    for i in range(n_polys):
         poly_vec.append(read_ascii_polynomial(istream, is_xxpp_format,
                                               order=order))
         assert n_vars == poly_vec[i].n_vars()
@@ -237,7 +237,7 @@ def write_file_vec_polynomials(file_name, poly_vec, is_xxpp_format):
     n_polys = len(poly_vec)
     file_ostr.write('%d\n'%n_vars)
     file_ostr.write('%d\n'%n_polys)
-    print file_name, n_polys
+    print((file_name, n_polys))
     if is_xxpp_format:
         if n_polys == n_vars:
             poly_vec = xpxp_to_xxpp(poly_vec)

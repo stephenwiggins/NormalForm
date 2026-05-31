@@ -39,20 +39,20 @@ class PolynomialRingIO:
         ostream.write(')\n')
         ostream.write(')\n')
     def read_sexp_vector_of_polynomials(self, istream):
-        assert not SExprIO.strip_begin(istream.next(), 'vector-of-polynomials')
+        assert not SExprIO.strip_begin(next(istream), 'vector-of-polynomials')
         #
-        elts = SExprIO.elts(SExprIO.strip_braces(istream.next(), 'num-polynomials'))
+        elts = SExprIO.elts(SExprIO.strip_braces(next(istream), 'num-polynomials'))
         assert len(elts) == 1
         n_polys = int(elts[0])
         assert n_polys >= 1
         #
-        assert not SExprIO.strip_begin(istream.next(), 'polynomials')
+        assert not SExprIO.strip_begin(next(istream), 'polynomials')
         #
         polys = []
-        for i in xrange(n_polys):
+        for i in range(n_polys):
             polys.append(self.read_sexp_polynomial(istream))
-        assert not SExprIO.strip_end(istream.next(), 'polynomials')
-        assert not SExprIO.strip_end(istream.next(), 'vector-of-polynomials')
+        assert not SExprIO.strip_end(next(istream), 'polynomials')
+        assert not SExprIO.strip_end(next(istream), 'vector-of-polynomials')
         return polys
     def write_sexp_polynomial(self, ostream, poly):
         """
@@ -83,23 +83,23 @@ class PolynomialRingIO:
         @return: polynomial.
 
         """
-        assert not SExprIO.strip_begin(istream.next(), 'polynomial')
+        assert not SExprIO.strip_begin(next(istream), 'polynomial')
         #
-        elts = SExprIO.elts(SExprIO.strip_braces(istream.next(), 'num-variables'))
+        elts = SExprIO.elts(SExprIO.strip_braces(next(istream), 'num-variables'))
         assert len(elts) == 1
         n_vars = int(elts[0])
         assert n_vars >= 0
         assert n_vars == self.ring.n_vars(), 'Wrong number of variables in ring.read_sexp_polynomial.'
         #
-        elts = SExprIO.elts(SExprIO.strip_braces(istream.next(), 'num-monomials'))
+        elts = SExprIO.elts(SExprIO.strip_braces(next(istream), 'num-monomials'))
         assert len(elts) == 1
         n_monomials = int(elts[0])
         assert n_monomials >= 0
         #
-        elts = SExprIO.elts(SExprIO.strip_braces(istream.next(), 'powers-format'))
+        elts = SExprIO.elts(SExprIO.strip_braces(next(istream), 'powers-format'))
         assert len(elts) == 1
         #
-        assert not SExprIO.strip_begin(istream.next(), 'monomials')
+        assert not SExprIO.strip_begin(next(istream), 'monomials')
         #
         if elts[0] == '\"dense\"':
             p = self._read_dense_sexp_polynomial(istream, n_vars, n_monomials)
@@ -108,8 +108,8 @@ class PolynomialRingIO:
             p = self._read_sparse_sexp_polynomial(istream, n_vars, n_monomials)
         assert len(p) == n_monomials, 'Wrong number of monomials read.'
         #
-        assert not SExprIO.strip_end(istream.next(), 'monomials')
-        assert not SExprIO.strip_end(istream.next(), 'polynomial')
+        assert not SExprIO.strip_end(next(istream), 'monomials')
+        assert not SExprIO.strip_end(next(istream), 'polynomial')
         return p
     def _write_dense_sexp_polynomial(self, ostream, poly):
         """
@@ -145,8 +145,8 @@ class PolynomialRingIO:
 
         """
         p = self.ring.zero()
-        for i in xrange(n_monomials):
-            line = istream.next()
+        for i in range(n_monomials):
+            line = next(istream)
             sinner = SExprIO.strip_braces(line)
             elts = SExprIO.elts(sinner)
             spowers = SExprIO.strip_braces(' '.join(elts[:n_vars]))

@@ -62,7 +62,7 @@ class SemiclassicalNormalForm(NormalForm):
         self.h_er = cla_to_sem(self.h_er)
         self.er_in_terms_of_dr_classical = self.er_in_terms_of_dr
         er_in_terms_of_dr = []
-        for i in xrange(len(self.er_in_terms_of_dr)):
+        for i in range(len(self.er_in_terms_of_dr)):
             er_in_terms_of_dr.append(cla_to_sem(self.er_in_terms_of_dr[i]))
         er_in_terms_of_dr.append(Polynomial.Polynomial.CoordinateMonomial(n_vars,n_vars-1))
         self.er_in_terms_of_dr = er_in_terms_of_dr

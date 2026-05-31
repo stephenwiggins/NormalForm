@@ -37,49 +37,49 @@ class ClassAttributesAsDefaults(unittest.TestCase):
 
     def test_default(self):
         ins = self.ClassWithDefaultAttribute()
-        self.assert_(ins._hello == 'class hello')
+        self.assertTrue(ins._hello == 'class hello')
 
     def test_default_in_override(self):
         ins = self.ClassWithOptionalOverride()
-        self.assert_(ins._hello == 'class hello')
+        self.assertTrue(ins._hello == 'class hello')
 
     def test_overridden(self):
         ins = self.ClassWithOptionalOverride('instance hello')
-        self.assert_(ins._hello == 'instance hello')
+        self.assertTrue(ins._hello == 'instance hello')
 
     def test_setting_instance_attributes_shadows_class(self):
         a = self.ClassWithOptionalOverride('a')
         a._hello = 'c'
-        self.assert_(a._hello == 'c')
+        self.assertTrue(a._hello == 'c')
         b = self.ClassWithOptionalOverride()
-        self.assert_(b._hello == 'class hello')
+        self.assertTrue(b._hello == 'class hello')
 
     def test_override_default(self):
         a = self.ClassWithOverrideMethod()
-        self.assert_(a._hello == 'class hello')
+        self.assertTrue(a._hello == 'class hello')
 
     def test_override_self_method_overrides(self):
         a = self.ClassWithOverrideMethod()
         a.change_self()
-        self.assert_(a._hello == 'new self hello')
+        self.assertTrue(a._hello == 'new self hello')
 
     def test_override_class_method_overrides_default(self):
         a = self.ClassWithOverrideMethod()
         a.change_class()
-        self.assert_(a._hello == 'new class hello')
+        self.assertTrue(a._hello == 'new class hello')
 
     def test_override_self_shadows_class(self):
         a = self.ClassWithOverrideMethod()
         a.change_self()
         a.change_class()
-        self.assert_(a._hello == 'new self hello')
+        self.assertTrue(a._hello == 'new self hello')
 
     def test_override_self_method_does_not_override_other(self):
         a = self.ClassWithOverrideMethod()
         a.change_self()
         b = self.ClassWithOverrideMethod()
-        self.assert_(a._hello == 'new self hello')
-        self.assert_(b._hello == 'class hello')
+        self.assertTrue(a._hello == 'new self hello')
+        self.assertTrue(b._hello == 'class hello')
 
 def suite():
     suites = []

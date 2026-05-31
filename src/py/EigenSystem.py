@@ -199,20 +199,20 @@ class EigenSystem:
         seq = self.val_vec_pairs
         tol = self.tolerance
         if len(seq)%2:
-            raise IndexError, 'odd length sequence given to locate_pairs.'
+            raise IndexError('odd length sequence given to locate_pairs.')
         pairs = []
-        for i_left in xrange(0, len(seq), 2):
+        for i_left in range(0, len(seq), 2):
             i_right = i_left+1
             left, right = seq[i_left], seq[i_right]
             left_val = trunc(complex(left.val), tol)
             right_val = trunc(complex(right.val), tol)
             err = abs(left_val-(-right_val))
             if err > tol:
-                raise ValueError, 'eigenvalues not in +/- pairs, error %s'%err
+                raise ValueError('eigenvalues not in +/- pairs, error %s'%err)
             if (abs(left_val) == 0.0) or (abs(right_val) == 0.0):
                 logger.info('zero eigenvalue found')
                 if (abs(left_val) != 0.0) or (abs(right_val) != 0.0):
-                    raise ValueError, 'zero not paired with zero'
+                    raise ValueError('zero not paired with zero')
             pairs.append(positive_member_first(left, right))
         self.plus_minus_pairs = pairs
         self._lie = LieAlgebra(len(pairs))
@@ -243,7 +243,7 @@ class EigenSystem:
                         eq_type += '0'
                         #logger.info('zero')
                     else:
-                        raise ValueError, 'unknown eigenvalue combination.'
+                        raise ValueError('unknown eigenvalue combination.')
         assert len(eq_type) == len(self.plus_minus_pairs)
         logger.info('equilibrium type %s', eq_type)
         self.equilibrium_type = eq_type

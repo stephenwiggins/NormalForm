@@ -45,7 +45,7 @@ class PackedPowers(TuplePowers):
                 temp.append(self[i] + other[i])
             return PackedPowers(tuple(temp), bits=self._powers._bits) #ADB
         else:
-            raise IndexError, "Mismatched Powers lengths"
+            raise IndexError("Mismatched Powers lengths")
 
     def __pow__(self, other):
 
@@ -64,7 +64,7 @@ class PackedPowers(TuplePowers):
 
         res = 0;
         #could use sum now that __iter__ is overloaded for _powers tuple?
-        for i in xrange(0, len(self._powers)):
+        for i in range(0, len(self._powers)):
             res += self._powers[i]
         return res
 

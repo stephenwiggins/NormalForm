@@ -73,9 +73,9 @@ class Hill:
         k_comp = self.alg.zero()
         w_comp = self.alg.zero()
         #the following is not very efficient for separating grades!
-        h_list = [self.alg.isograde(h_dc, i + 2) for i in xrange(0, steps + 1)]
+        h_list = [self.alg.isograde(h_dc, i + 2) for i in range(0, steps + 1)]
         nf = LieTriangle(self.alg, h_dc_2)
-        for i in xrange(0, steps + 1):
+        for i in range(0, steps + 1):
             h_term = h_list[i]
             k_term, w_term = nf.compute_normal_form_and_generating_function(h_term)
             k_comp += k_term
@@ -100,12 +100,12 @@ class NormalizeHill(unittest.TestCase):
         isograde = self.hill.alg.isograde
         #print 'diagonalized(R)[gra2]', isograde(self.hill.h_dr, 2)
         #print 'diagonalized(C)[gra2]', isograde(self.hill.h_dc, 2)
-        self.assert_(len(isograde(self.hill.h_dr, 2)) == 5)
-        self.assert_(len(isograde(self.hill.h_dc, 2)) == 3)
+        self.assertTrue(len(isograde(self.hill.h_dr, 2)) == 5)
+        self.assertTrue(len(isograde(self.hill.h_dc, 2)) == 3)
         #print 'normalized(R)[gra2]', isograde(self.hill.k_dr, 2)
         #print 'normalized(C)[gra2]', isograde(self.hill.k_dc, 2)
-        self.assert_(isograde(self.hill.k_dr, 2) == isograde(self.hill.h_dr, 2))
-        self.assert_(isograde(self.hill.k_dc, 2) == isograde(self.hill.h_dc, 2))
+        self.assertTrue(isograde(self.hill.k_dr, 2) == isograde(self.hill.h_dr, 2))
+        self.assertTrue(isograde(self.hill.k_dc, 2) == isograde(self.hill.h_dc, 2))
 
     def test_set_hamiltonian(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -117,7 +117,7 @@ class NormalizeHill(unittest.TestCase):
         extractor.find_lost_simple_integrals_and_non_simple_integral()
 
         lost = extractor._lost_integrals
-        self.assert_(not lost) #none lost for hills
+        self.assertTrue(not lost) #none lost for hills
 
     def test_find_lost_integrals_and_non_simple_one_simple(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -125,7 +125,7 @@ class NormalizeHill(unittest.TestCase):
         extractor.find_lost_simple_integrals_and_non_simple_integral()
 
         simple_part = extractor._simple_part
-        self.assert_(simple_part == self.hill.k_dc)
+        self.assertTrue(simple_part == self.hill.k_dc)
 
     def test_find_lost_integrals_and_non_simple_one_non_simple(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -133,7 +133,7 @@ class NormalizeHill(unittest.TestCase):
         extractor.find_lost_simple_integrals_and_non_simple_integral()
 
         non_simple = extractor._non_simple_integral
-        self.assert_(not non_simple)
+        self.assertTrue(not non_simple)
 
     def test_list_the_simple_integrals(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -142,7 +142,7 @@ class NormalizeHill(unittest.TestCase):
         extractor.list_the_simple_integrals()
 
         kept = extractor._kept_integrals
-        self.assert_(kept == [0, 1, 2])
+        self.assertTrue(kept == [0, 1, 2])
 
     def test_express_simple_part_as_polynomial_over_all_integrals(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -153,7 +153,7 @@ class NormalizeHill(unittest.TestCase):
 
         simple_in_ints = extractor._simple_in_integrals
         #print 'simple part in all ints', simple_in_ints
-        self.assert_(len(simple_in_ints) == len(self.hill.k_dc))
+        self.assertTrue(len(simple_in_ints) == len(self.hill.k_dc))
 
     def test_express_all_as_polynomial_over_all_integrals(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -165,7 +165,7 @@ class NormalizeHill(unittest.TestCase):
 
         total_in_ints = extractor._total_in_integrals
         #print 'whole polynomial in all ints', total_in_ints
-        self.assert_(len(total_in_ints) == len(self.hill.k_dc))
+        self.assertTrue(len(total_in_ints) == len(self.hill.k_dc))
 
     def test_express_all_integrals_in_normal_form_coords(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -176,10 +176,10 @@ class NormalizeHill(unittest.TestCase):
         extractor.express_all_integrals_in_normal_form_coords()
 
         ints_in_coords = extractor._integrals_in_coords
-        self.assert_(len(ints_in_coords) == 3)
+        self.assertTrue(len(ints_in_coords) == 3)
         #print 'all integrals in coords', ints_in_coords
         for i in ints_in_coords:
-            self.assert_(len(i) == 1) #1-term
+            self.assertTrue(len(i) == 1) #1-term
 
     def test_integral_expressions_against_original_hamiltonian(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -195,7 +195,7 @@ class NormalizeHill(unittest.TestCase):
 
         eval_at_ints = total_in_ints.substitute(ints_in_coords)
         diff = eval_at_ints - self.hill.k_dc
-        self.assert_(diff.l_infinity_norm() < 1.0e-15, diff)
+        self.assertTrue(diff.l_infinity_norm() < 1.0e-15, diff)
 
     def test_integral_expressions_against_original_hamiltonian_tmp(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -219,7 +219,7 @@ class NormalizeHill(unittest.TestCase):
         eval_at_ints = res
 
         diff = eval_at_ints - self.hill.k_dc
-        self.assert_(diff.l_infinity_norm() < 1.0e-10, diff)
+        self.assertTrue(diff.l_infinity_norm() < 1.0e-10, diff)
 
     def test_integral_expressions_against_real_hamiltonian(self):
         extractor = IntegralExtractor(self.hill.alg)
@@ -242,11 +242,11 @@ class NormalizeHill(unittest.TestCase):
         eval_at_ints = res
 
         diff = eval_at_ints - self.hill.k_dr
-        self.assert_(diff.l_infinity_norm() < 1.0e-15, diff)
+        self.assertTrue(diff.l_infinity_norm() < 1.0e-15, diff)
 
         eval_at_ints = k_dc_in_ints.substitute(r_ints_in_coords)
         diff = eval_at_ints - self.hill.k_dr
-        self.assert_(diff.l_infinity_norm() < 1.0e-15, diff)
+        self.assertTrue(diff.l_infinity_norm() < 1.0e-15, diff)
         
 
 def suite():

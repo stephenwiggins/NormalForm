@@ -32,7 +32,7 @@ config = { "tolerance" : 5.0e-12 ,
 import sys
 import os
 # Look for a path from the environment and add to $PYTHONPATH
-if os.environ.has_key("NFBASEDIR"):
+if "NFBASEDIR" in os.environ:
     exedir = os.environ["NFBASEDIR"]
     exedir = os.path.normpath(os.path.join(exedir, "nf--unified--0.5/src/"))
 # See if it is in a local user's filespace
@@ -47,7 +47,7 @@ else:
     # Get the executable path, not the run dir., and add ../py to $PYTHONPATH
     exedir = sys.path[0]
     exedir = os.path.normpath(os.path.join(exedir, ".."))
-print "setting path to", exedir
+print("setting path to", exedir)
 sys.path.insert(1, os.path.join(exedir, "py"))
 exedir = os.path.normpath(os.path.join(exedir, "config-run"))
 
@@ -147,7 +147,7 @@ class NfConfig:
                       " %s %i %i" % (example.prefix, nf.alg.n_vars(), degree)
             if self._aconfig["do_stream"] == False:
                 acommand=acommand+" > Cpp%s 2>&1" % (self._aconfig["logfile"])
-            print acommand
+            print(acommand)
             os.system(acommand)
 
             if isinstance(nf, SemiclassicalNormalForm):
@@ -155,14 +155,14 @@ class NfConfig:
 
             from IsogradeInnerTaylorCoeffs import IsogradeInnerTaylorCoeffs
 
-            print "using C++ output for integral files"
+            print("using C++ output for integral files")
             #compute polynomial factorial conversions
             _iso = IsogradeInnerTaylorCoeffs(nf.alg, offset=2)
 
             file_prefix = '%s--k-from-nc' % (example.prefix)
             ring_io = PolynomialRingIO(nf.alg)
             p_list = []
-            for grade in xrange(2, degree + 1):
+            for grade in range(2, degree + 1):
                 file_name = '%s--grade-%d.pol' % (file_prefix, grade)
                 f_istr = open(file_name, 'r')
                 p_grade = ring_io.read_sexp_polynomial(f_istr)
@@ -212,9 +212,9 @@ class NfConfig:
         #output profile
         stats.strip_dirs()
         stats.sort_stats('time', 'cum', 'calls')
-        print '[1] Statistics:'
+        print('[1] Statistics:')
         stats.print_stats(proportion_worst_results)
-        print '[2] Callers for the above:'
+        print('[2] Callers for the above:')
         stats.print_callers(proportion_worst_results)
 
 
@@ -266,9 +266,9 @@ def compute_diagonalisation(nf, lie_algebra, h_er_trunc, max_degree, tolerance, 
     nf.h_er = nf.alg.isograde(nf.h_er, 0, desired_grade+1)
     nf.confirm_equilibrium_point()
     #output max grade
-    print "Set up to degree", desired_grade,
+    print("Set up to degree", desired_grade, end=' ')
     #output h_er
-    print "with hamiltonian degree", nf.h_er.degree()
+    print("with hamiltonian degree", nf.h_er.degree())
     #diagonalize
     nf.diagonalize()
     #compute the complexification maps
@@ -298,7 +298,7 @@ def compute_diagonalisation(nf, lie_algebra, h_er_trunc, max_degree, tolerance, 
     ring_io.write_sexp_vector_of_polynomials(file_ostr, er_from_dr)
     file_ostr.close()
     #output equilibrium type
-    print nf.eig.get_equilibrium_type()
+    print(nf.eig.get_equilibrium_type())
     #output the complexification maps
     file_name = '%s--r-from-c.vpol' % system_prefix
     file_ostr = open(file_name, 'w')
@@ -314,7 +314,7 @@ def dump_isogrades(graded_algebra, poly, max_grade, system_prefix,
     logger.info('dumping %s series...' % (poly_name))
     file_prefix = '%s--%s' % (system_prefix, poly_name)
     ring_io = PolynomialRingIO(graded_algebra)
-    for grade in xrange(min_grade, max_grade + 1):
+    for grade in range(min_grade, max_grade + 1):
         file_name = '%s--grade-%d.pol' % (file_prefix,
                                           grade-min_grade+min_grade_number)
         file_ostr = open(file_name, 'w')

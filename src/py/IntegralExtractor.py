@@ -102,7 +102,7 @@ class IntegralExtractor:
         _dof = self._alg.dof()
         _lost = self._lost_integrals
         
-        kept = list(Set(xrange(_dof)).difference(_lost))
+        kept = list(Set(list(range(_dof))).difference(_lost))
         kept.sort()
         assert len(kept) <= _dof
         if self._non_simple_integral:
