@@ -33,7 +33,7 @@ class SparseTuple:
             if len(args) == 2:
                 self.__init__from_length_and_dict(*args)
             else:
-                raise IndexError, 'Bad SparsePowers constructor call'
+                raise IndexError('Bad SparsePowers constructor call')
 
     def __init__from_length_and_dict(self, length, ind_to_elt=None):
         """
@@ -50,7 +50,7 @@ class SparseTuple:
         self._len = length
         self._i_to_e = {}
         if ind_to_elt:
-            for i, e in ind_to_elt.iteritems():
+            for i, e in list(ind_to_elt.items()):
                 assert i >= 0 and i < length
                 if e < 0:
                     raise NegativeIntegerError('negative value in sparse tuple')
@@ -80,10 +80,10 @@ class SparseTuple:
             self._len += 1
 
     def iteritems(self):
-        return self._i_to_e.iteritems()
+        return iter(list(self._i_to_e.items()))
 
     def has_key(self, key):
-        return self._i_to_e.has_key(key)
+        return key in self._i_to_e
 
     def __getitem__(self, j):
         if isinstance(j, slice):
@@ -104,8 +104,8 @@ class SparseTuple:
             stop = self._len
         if step == None:
             step = 1
-        for k in xrange(start, stop, step):
-            if self._i_to_e.has_key(k):
+        for k in range(start, stop, step):
+            if k in self._i_to_e:
                 res[ind] = self._i_to_e[k]
             ind += 1
         return SparseTuple(int(self._len/step), res)
@@ -117,7 +117,7 @@ class SparseTuple:
         if (j >= 0) and (j < len(self)):
             if item < 0:
                 raise NegativeIntegerError(item)
-            if self._i_to_e.has_key(j) and item == 0:
+            if j in self._i_to_e and item == 0:
                 del self._i_to_e[j] #remove zeros
             else:
                 if item != 0:
@@ -132,7 +132,7 @@ class SparseTuple:
 
         """
         res = [0,]*self._len
-        for i, p in self._i_to_e.iteritems():
+        for i, p in list(self._i_to_e.items()):
             res[i] = p
         return res
 
@@ -175,7 +175,7 @@ class SparseTuple:
         return hash(self.to_tuple())
 
     def __iter__(self):
-        for i in xrange(self._len):
+        for i in range(self._len):
             yield self[i]
 
     def __str__(self):

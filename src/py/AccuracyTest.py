@@ -33,29 +33,29 @@ class ForcePure(unittest.TestCase):
 
     def test_float(self):
         c = 0.5
-        self.assertEquals(self.trunc(c), 0.5)
+        self.assertEqual(self.trunc(c), 0.5)
         c = -2.0e-15
-        self.assertEquals(self.trunc(c), -2.0e-15)
+        self.assertEqual(self.trunc(c), -2.0e-15)
         c = -3.0e-17
-        self.assertEquals(self.trunc(c), 0.0)
+        self.assertEqual(self.trunc(c), 0.0)
 
     def test_real(self):
         c = complex(0.5, 0.0)
-        self.assertEquals(self.trunc(c), 0.5)
+        self.assertEqual(self.trunc(c), 0.5)
         c = complex(0.5, 1.0e-16)
-        self.assertEquals(self.trunc(c), 0.5)
+        self.assertEqual(self.trunc(c), 0.5)
 
     def test_imag(self):
         c = complex(0.0, -2.3)
-        self.assertEquals(self.trunc(c), -2.3J)
+        self.assertEqual(self.trunc(c), -2.3J)
         c = complex(-5.0e-16, -2.3)
-        self.assertEquals(self.trunc(c), -2.3J)
+        self.assertEqual(self.trunc(c), -2.3J)
 
     def test_complex(self):
         c = complex(0.5, 0.1)
-        self.assertEquals(self.trunc(c), 0.5+0.1J)
+        self.assertEqual(self.trunc(c), 0.5+0.1J)
         c = complex(1.0e-16, -2.3e-18)
-        self.assertEquals(self.trunc(c), 0.0)
+        self.assertEqual(self.trunc(c), 0.0)
 
 def suite():
     suites = []

@@ -7,7 +7,7 @@ def fact(n):
     Factorial of n, with safety checks.
 
     """
-    assert isinstance(n, long) or isinstance(n, int)
+    assert isinstance(n, int) or isinstance(n, int)
     assert n>=0
     return _fact(n)
 
@@ -18,7 +18,7 @@ def _fact(n):
 
     """
     prod = 1
-    for k in xrange(1, n+1):
+    for k in range(1, n+1):
         prod *= k
     return prod
 
@@ -28,8 +28,8 @@ def binom(n, k):
     Binomial coefficient by the inefficient formula.
 
     """
-    assert isinstance(n, long) or isinstance(n, int)
-    assert isinstance(k, long) or isinstance(k, int)
+    assert isinstance(n, int) or isinstance(n, int)
+    assert isinstance(k, int) or isinstance(k, int)
     assert n>=0
     assert k>=0
     assert k<=n
@@ -42,8 +42,8 @@ def p(k, n):
     using addends of size at least k.
 
     """
-    assert isinstance(k, long) or isinstance(k, int)
-    assert isinstance(n, long) or isinstance(n, int)
+    assert isinstance(k, int) or isinstance(k, int)
+    assert isinstance(n, int) or isinstance(n, int)
     assert k >= 0
     assert n >= 0
     return _p(k, n)
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     assert fact(0) == 1
     assert fact(1) == 1
     assert fact(2) == 2
-    for i in xrange(1, 100):
+    for i in range(1, 100):
         assert fact(i) == i*fact(i-1)
 
     #partitions (order-independent) using addends of at least k

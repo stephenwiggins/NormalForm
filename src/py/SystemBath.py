@@ -113,13 +113,13 @@ class SystemBath:
 
         #Compute some constants:
         coeff_q_s = a
-        for i in xrange(0, len(c)):
+        for i in range(0, len(c)):
             coeff_q_s += (c[i]**2.0)/(2.0 * m[i] * (w[i]**2.0))
         coeff_p_s = 1.0/(2.0 * m_s)
 
         coeff_q_bath = []
         coeff_p_bath = []
-        for i in xrange(0, len(c)):
+        for i in range(0, len(c)):
             coeff_q_bath.append(0.5 * m[i] * (w[i]**2.0))
             coeff_p_bath.append(1.0/(2.0 * m[i]))
 
@@ -136,7 +136,7 @@ class SystemBath:
 
         #Bath part:
         h_bath = self._lie.zero()
-        for i in xrange(len(c)):
+        for i in range(len(c)):
             bath_dof = i+1
             h_bath += coeff_q_bath[i] * (self._lie.q(bath_dof)**2)
             h_bath += coeff_p_bath[i] * (self._lie.p(bath_dof)**2)
@@ -291,7 +291,7 @@ class MassWeightedSystemBath:
         a = -0.5*(self._omega_b**2)
         b = (self._omega_b**4)/(16.0*self._v_0_sh)
         coeff_q_s = a
-        for i in xrange(0, len(c_star)):
+        for i in range(0, len(c_star)):
             coeff_q_s += c_star[i]/(2.0 * (w[i]))
         coeff_p_s = 1.0/2.0
 
@@ -305,7 +305,7 @@ class MassWeightedSystemBath:
         #bath coefficients:
         coeff_q_bath = []
         coeff_p_bath = []
-        for i in xrange(0, len(c_star)):
+        for i in range(0, len(c_star)):
             coeff_q_bath.append(0.5 * (w[i]**2.0))
             coeff_p_bath.append(1.0/2.0)
 
@@ -315,7 +315,7 @@ class MassWeightedSystemBath:
 
         #bath part:
         h_bath = self._lie.zero()
-        for i in xrange(len(c_star)):
+        for i in range(len(c_star)):
             bath_dof = i+1
             h_bath += coeff_q_bath[i] * (self._lie.q(bath_dof)**2)
             h_bath += coeff_p_bath[i] * (self._lie.p(bath_dof)**2)
@@ -352,7 +352,7 @@ def new_random_system_bath(n_bath_modes,
     bath_masses = []
     bath_omegas = []
     bath_coupling_constants = []
-    for i in xrange(0, n_bath_modes):
+    for i in range(0, n_bath_modes):
         bath_coupling_constants.append(uniform(0.001, 0.5))
         bath_masses.append(uniform(0.5, 3.6))
         bath_omegas.append(gauss(0.0, 2.0))

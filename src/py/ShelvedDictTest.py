@@ -9,8 +9,8 @@ class EmptyDict(unittest.TestCase):
     def test_empty(self):
         s = ShelvedDict()
         d = {}
-        self.assert_(s==d, 'Empty shelf != empty dict.')
-        self.assert_(d==s, 'Empty shelf != empty dict.')
+        self.assertTrue(s==d, 'Empty shelf != empty dict.')
+        self.assertTrue(d==s, 'Empty shelf != empty dict.')
 
 class DictTestExamples(unittest.TestCase):
 
@@ -28,9 +28,9 @@ class DictTestExamples(unittest.TestCase):
     def test_examples(self):
         for d in self.examples:
             s = ShelvedDict()
-            for key, item in d.iteritems():
+            for key, item in list(d.items()):
                 s[key] = item
-            self.assert_(self._cond(s, d))
+            self.assertTrue(self._cond(s, d))
 
 class EqualsLikeDict(DictTestExamples):
     def _cond(self, a, b):

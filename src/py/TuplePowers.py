@@ -36,7 +36,7 @@ class TuplePowers(PowersBase):
             if len(args) == 2:
                 self.__init__from_length_and_dict(*args)
             else:
-                raise IndexError, 'Bad Powers constructor call'
+                raise IndexError('Bad Powers constructor call')
 
     def __init__from_elements(self, powers=(0,)):
         assert isinstance(powers, tuple)
@@ -46,7 +46,7 @@ class TuplePowers(PowersBase):
         assert isinstance(length, int)
         assert isinstance(ind_to_pow, dict)
         powers = [0,]*length
-        for i, p in ind_to_pow.iteritems():
+        for i, p in list(ind_to_pow.items()):
             assert p >= 0
             if p != 0:
                 powers[i] = p
@@ -95,7 +95,7 @@ class TuplePowers(PowersBase):
                 result *= args[i] ** self._powers[i]
             return result
         else:
-            raise IndexError, "Wrong number of arguments"
+            raise IndexError("Wrong number of arguments")
 
     def __getslice__(self, i, j):
         return self._powers[i:j]
@@ -112,7 +112,7 @@ class TuplePowers(PowersBase):
                 temp.append(self[i] + other[i])
             return TuplePowers(tuple(temp))
         else:
-            raise IndexError, "Mismatched Powers lengths"
+            raise IndexError("Mismatched Powers lengths")
 
     def __pow__(self, other):
         "other must be an integer type > 0"

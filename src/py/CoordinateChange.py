@@ -58,14 +58,14 @@ class CoordinateChange:
         """
         db_key = _make_db_key(i, j)
         bracket = self._alg.bracket
-        if self._x_ij.has_key(db_key):
+        if db_key in self._x_ij:
             pass
         else:
             if (j == 0):
                 self._x_ij[db_key] = self._iso.poly_to_inner_taylor(self._f, i)
             else:
                 temp = self.triangle_diag_in_norm(i+1, j-1).copy()
-                for k in xrange(0, i+1):
+                for k in range(0, i+1):
                     if (i+1-k) >= len(self._w_i):
                         assert 0, 'out of range, (k+1)=%d'%(k+1)
                     else:
@@ -78,7 +78,7 @@ class CoordinateChange:
         self._f = f
         self._x_i = x_i_list
         self._x_ij = x_ij_dict
-        for i in xrange(0, n + 1):
+        for i in range(0, n + 1):
             self._x_i.append(self.triangle_diag_in_norm(0, i))
 
     def triangle_norm_in_diag(self, i, j):
@@ -90,14 +90,14 @@ class CoordinateChange:
         """
         db_key = _make_db_key(i, j)
         bracket = self._alg.bracket
-        if self._x_ij.has_key(db_key):
+        if db_key in self._x_ij:
             pass
         else:
             if (i == 0):
                 self._x_ij[db_key] = self._iso.poly_to_inner_taylor(self._f, j)
             else:
                 temp = self.triangle_norm_in_diag(i-1, j+1).copy()
-                for k in xrange(0, i):
+                for k in range(0, i):
                     if (k+1) >= len(self._w_i):
                         assert 0, 'out of range, (k+1)=%d'%(k+1)
                     else:
@@ -110,5 +110,5 @@ class CoordinateChange:
         self._f = f
         self._x_i = x_i_list
         self._x_ij = x_ij_dict
-        for i in xrange(0, n + 1):
+        for i in range(0, n + 1):
             self._x_i.append(self.triangle_norm_in_diag(i, 0))

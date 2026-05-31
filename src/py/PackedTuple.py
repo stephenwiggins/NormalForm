@@ -76,9 +76,9 @@ class PackedTuple:
         num_per_int = 31 / bits
         n = int(ceil(float(self._len) / float(num_per_int)))
         self._val = []
-        for j in xrange(0, n):
+        for j in range(0, n):
             v = 0
-            for i in xrange(0, num_per_int):
+            for i in range(0, num_per_int):
                 m = j * num_per_int + i
                 if (m < self._len):
                     if terms[m]<0:
@@ -127,7 +127,7 @@ class PackedTuple:
         
     def to_list(self):
         res = []
-        for i in xrange(0,self._len):
+        for i in range(0,self._len):
             res.append(self[i])
         return res
 
@@ -158,7 +158,7 @@ class PackedTuple:
         return hash(self.to_tuple())
 
     def __iter__(self):
-        for i in xrange(self._len):
+        for i in range(self._len):
             yield self[i]
 
     def __str__(self):

@@ -219,8 +219,8 @@ if __name__ == '__main__':
 
     stats.strip_dirs()
     stats.sort_stats('time', 'cum', 'calls')
-    print '[1] Statistics:'
+    print('[1] Statistics:')
     stats.print_stats(proportion_worst_results)
-    print '[2] Callers for the above:'
+    print('[2] Callers for the above:')
     stats.print_callers(proportion_worst_results)
 

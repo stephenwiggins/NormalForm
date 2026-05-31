@@ -34,34 +34,34 @@ class EmptyGeneratingFunction(unittest.TestCase):
         steps = 5
         alg = LieAlgebra(dof)
         w_list = [2.0*alg.one()]*(steps+1)
-        for index in xrange(alg.n_vars()):
+        for index in range(alg.n_vars()):
             f_s = alg.coordinate_monomial(index)+2.3*alg.one()
             x_i_list = []
             x_ij_dict = {}
             changer = CoordinateChange(alg, w_list)
             changer.express_diag_in_norm(f_s, x_i_list, x_ij_dict, steps)
             id_s = alg.coordinate_monomial(index)
-            self.assert_(len(x_i_list) >= 1)
-            self.assert_(x_i_list[0] == id_s, x_i_list[0])
-            for i in xrange(1, len(x_i_list)):
-                self.assert_(x_i_list[i] == alg.zero())
+            self.assertTrue(len(x_i_list) >= 1)
+            self.assertTrue(x_i_list[0] == id_s, x_i_list[0])
+            for i in range(1, len(x_i_list)):
+                self.assertTrue(x_i_list[i] == alg.zero())
 
     def test_norm_in_diag(self):
         dof = 2
         steps = 5
         alg = LieAlgebra(dof)
         w_list = [3.0*alg.one()]*(steps+1)
-        for index in xrange(alg.n_vars()):
+        for index in range(alg.n_vars()):
             f_s = alg.coordinate_monomial(index)
             x_i_list = []
             x_ij_dict = {}
             changer = CoordinateChange(alg, w_list)
             changer.express_norm_in_diag(f_s, x_i_list, x_ij_dict, steps)
             id_s = alg.coordinate_monomial(index)
-            self.assert_(len(x_i_list) >= 1)
-            self.assert_(x_i_list[0] == id_s, x_i_list[0])
-            for i in xrange(1, len(x_i_list)):
-                self.assert_(x_i_list[i] == alg.zero())
+            self.assertTrue(len(x_i_list) >= 1)
+            self.assertTrue(x_i_list[0] == id_s, x_i_list[0])
+            for i in range(1, len(x_i_list)):
+                self.assertTrue(x_i_list[i] == alg.zero())
 
 def suite():
     suites = []

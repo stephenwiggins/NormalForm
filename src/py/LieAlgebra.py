@@ -98,7 +98,7 @@ class PolynomialLieAlgebraBase(PolynomialRingInterface):
         n_vars = 2*self.dof() #okay for both derived classes
         for m, c in p.powers_and_coefficients():
             found_nonzero = False
-            for qi in xrange(0, n_vars, 2):
+            for qi in range(0, n_vars, 2):
                 pi = qi+1
                 if m[qi] != m[pi]:
                     return False
@@ -114,7 +114,7 @@ class PolynomialLieAlgebraBase(PolynomialRingInterface):
         for m, c in p.powers_and_coefficients():
             store = True
             found_nonzero = False
-            for qi in xrange(0, 2*self.dof(), 2):
+            for qi in range(0, 2*self.dof(), 2):
                 pi = qi+1
                 if m[qi] != m[pi]:
                     store = False
@@ -169,7 +169,7 @@ class LieAlgebra(PolynomialLieAlgebraBase):
         if not prefixes:
             prefixes = ['q', 'p']
         assert len(prefixes) == 2
-        names = ['%s_{%d}'%(prefixes[i%2], i//2) for i in xrange(self.n_vars())]
+        names = ['%s_{%d}'%(prefixes[i%2], i//2) for i in range(self.n_vars())]
         assert len(names) == self.n_vars(), names
         return PolynomialRingInterface.display(self, pol_p, names=names)
 
@@ -237,28 +237,28 @@ class SemiclassicalLieAlgebra(PolynomialLieAlgebraBase):
         n_max = min(self.grade(pol_a), self.grade(pol_b))
         d = self.dof()
         result = self.zero()
-        for n in xrange(0, n_max+1):
+        for n in range(0, n_max+1):
             for po_a, co_a in pol_a.powers_and_coefficients():
                 for po_b, co_b in pol_b.powers_and_coefficients():
                     m = [0,]*(2*d+1)
                     if (n==0):
                         #usual product:
-                        for k in xrange(0, 2*d+1):
+                        for k in range(0, 2*d+1):
                             m[k] = po_a[k] + po_b[k]
                         c = co_a * co_b
                         result += self.monomial(Powers(m), c)
                         #end case n==0:
                     else:
-                        for N in xrange(0, (n+1)**(2*d)):
+                        for N in range(0, (n+1)**(2*d)):
                             Nnew = N
-                            for k in xrange(2*d, d, -1):
+                            for k in range(2*d, d, -1):
                                 ii = (k - d)-1 #integer div
                                 assert 0<=ii<d, ii
                                 ip = 2*ii+1
                                 assert 0<=ip<2*d
                                 m[ip] = int(Nnew) // int((n+1)**(k-1))
                                 Nnew -= m[ip]*((n+1)**(k-1))
-                            for k in xrange(d, 0, -1):
+                            for k in range(d, 0, -1):
                                 ii = k - 1 #integer div
                                 assert 0<=ii<d, ii
                                 iq = 2*ii
@@ -266,20 +266,20 @@ class SemiclassicalLieAlgebra(PolynomialLieAlgebraBase):
                                 m[iq] = int(Nnew) // int((n+1)**(k-1))
                                 Nnew -= m[iq]*((n+1)**(k-1))
                             diff_orderis = 0
-                            for k in xrange(0, 2*d):
+                            for k in range(0, 2*d):
                                 diff_orderis += m[k]
                             if (diff_orderis == n):
                                 cc = (0.0+0.5J)**(n)
                                 n_mono = [0,]*(2*d+1)
                                 n_mono[-1] = n + po_a[-1] + po_b[-1]
                                 cc *= (co_a*co_b)
-                                for k in xrange(0, 2*d):
+                                for k in range(0, 2*d):
                                     cc /= float(factorial(m[k]))
                                 sign_exp = 0
-                                for k in xrange(1, 2*d, 2): #ip
+                                for k in range(1, 2*d, 2): #ip
                                     sign_exp += m[k]
                                 cc *= float((-1)**sign_exp)
-                                for k in xrange(0, 2*d-1, 2): #iq
+                                for k in range(0, 2*d-1, 2): #iq
                                     iq = k
                                     ip = k+1
                                     pak, qbk = po_a[ip], po_b[iq]
@@ -378,7 +378,7 @@ class SemiclassicalLieAlgebra(PolynomialLieAlgebraBase):
         if not prefixes:
             prefixes = ['x', 'p']
         assert len(prefixes) == 2
-        names = ['%s_{%d}'%(prefixes[i%2], i//2) for i in xrange(2*self.dof())]
+        names = ['%s_{%d}'%(prefixes[i%2], i//2) for i in range(2*self.dof())]
         names.append('\\bar{h}')
         assert len(names) == self.n_vars()
         return PolynomialRingInterface.display(self, pol_p, names=names)
@@ -422,7 +422,7 @@ class ClassicalToSemiclassical:
     def conversion_substitution(self):
         dst = self.sem
         src = self.cla
-        for i in xrange(src.n_vars()):
+        for i in range(src.n_vars()):
             yield dst.coordinate_monomial(i)
     def __call__(self, p):
         self.cla.check_elt(p)

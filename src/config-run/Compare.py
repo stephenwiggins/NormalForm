@@ -39,8 +39,8 @@ def read_sexp_file(file_name):
 def compare_poly(poly1, poly2, comment=""):
     poly = poly1 - poly2
     if poly.n_terms() != 0:
-        print poly.l_infinity_norm(), '\t', poly.l1_norm() / (poly.n_terms() * 2), \
-              '\t', comment
+        print((poly.l_infinity_norm(), '\t', poly.l1_norm() / (poly.n_terms() * 2), \
+              '\t', comment))
 
 def compare_files(n_vars, file_name1, file_name2, comment="", factor = 1.0):
 
@@ -79,15 +79,15 @@ def compare_py_cpp():
     n_vars, file_prefix = read_n_vars() #'hill_l1_18--k-from-nc'
     #num_degrees=len(glob.glob('*w--inner*'))
     num_degrees=len(glob.glob('*k-from-nc-py--*'))
-    print "maximum diff            average diff"
-    for grade in xrange(2, 2+num_degrees):
+    print("maximum diff            average diff")
+    for grade in range(2, 2+num_degrees):
         file_name1 = '%sk-from-nc--grade-%d.pol' % (file_prefix, grade)
         file_name2 = '%sk-from-nc-py--grade-%d.pol' % (file_prefix, grade)
         compare_files(n_vars, file_name1, file_name2, comment=file_name1)
     factorial = 1.0
     #file_prefix = 'hill_l1_18--'
     num_degrees=len(glob.glob('*w--py--*'))
-    for grade in xrange(0, num_degrees):
+    for grade in range(0, num_degrees):
         file_name1 = '%sw--inner-%d.pol' % (file_prefix, grade)
         file_name2 = '%sw--py--grade-%d.pol' % (file_prefix, grade)
         # multiply first poly (cpp) by 1/n!

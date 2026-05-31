@@ -56,7 +56,7 @@ class Product(Lazy):
 
     def _ith_term(self, i):
         res = self.a[0]*self.b[i]
-        for j in xrange(1, i+1):
+        for j in range(1, i+1):
             res += self.a[j]*self.b[i-j]
         return res
 
@@ -67,7 +67,7 @@ class Cached(Lazy):
         self.values = {}
 
     def __getitem__(self, i):
-        if self.values.has_key(i):
+        if i in self.values:
             return self.values[i]
         else:
             x = self.obj[i]

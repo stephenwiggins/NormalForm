@@ -36,30 +36,30 @@ class PrettyPrinting(unittest.TestCase):
     def test_zero(self):
         """Pretty-print zero complex number."""
         st = Complex.pretty_complex(0)
-        self.assert_(_is_bracketed(st), st)
-        self.assert_(st[1:].startswith(self._zero), st)
+        self.assertTrue(_is_bracketed(st), st)
+        self.assertTrue(st[1:].startswith(self._zero), st)
     def test_one(self):
         """Pretty-print pure real one."""
         st = Complex.pretty_complex(1)
-        self.assert_(_is_bracketed(st), st)
-        self.assert_(st[1:].startswith(self._one), st)
+        self.assertTrue(_is_bracketed(st), st)
+        self.assertTrue(st[1:].startswith(self._one), st)
     def test_j(self):
         """Pretty-print pure imaginary unit J."""
         st = Complex.pretty_complex(1J)
-        self.assert_(_is_bracketed(st), st)
-        self.assert_(st[:-1].endswith(self._one+'j'), st)
+        self.assertTrue(_is_bracketed(st), st)
+        self.assertTrue(st[:-1].endswith(self._one+'j'), st)
     def test_one_plus_j(self):
         """Pretty-print mixed complex number one plus J."""
         st = Complex.pretty_complex(1+1J)
-        self.assert_(_is_bracketed(st), st)
-        self.assert_(st[1:].startswith(self._one+' '), st)
-        self.assert_(st[:-1].endswith(self._one+'j'), st)
+        self.assertTrue(_is_bracketed(st), st)
+        self.assertTrue(st[1:].startswith(self._one+' '), st)
+        self.assertTrue(st[:-1].endswith(self._one+'j'), st)
     def test_example(self):
         """Pretty-print an example in scientific format."""
         st = Complex.pretty_complex(-0.25+1.125J)
         re = '-2.5'+('0'*(self._prec-1))+'e-01'
         im = '+1.125'+('0'*(self._prec-3))+'e+00'
-        self.assertEquals(st, '(%s %sj)'%(re, im))
+        self.assertEqual(st, '(%s %sj)'%(re, im))
 
 def suite():
     """Automatically collect tests into a test suite."""

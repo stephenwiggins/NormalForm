@@ -18,10 +18,10 @@ random.seed(54321)
 class Comparison(unittest.TestCase):
 
     def test_self_equality(self):
-        for vars in xrange(1, 50):
+        for vars in range(1, 50):
             p = Polynomial(vars)
-            self.assert_(p == p)
-            self.assertEquals(p, p)
+            self.assertTrue(p == p)
+            self.assertEqual(p, p)
 
     def test_equality_with_complex_coeffs(self):
         common_powers = Powers((1, 2, 3))
@@ -30,45 +30,45 @@ class Comparison(unittest.TestCase):
         q = Polynomial(3)
         for pol in q, p:
             pol[common_powers] = coeff
-        self.assert_(q == p)
+        self.assertTrue(q == p)
 
 class FromPowers(unittest.TestCase):
 
     def test_type(self):
         p = Polynomial.Monomial((1, 2, 3))
-        self.assert_(isinstance(p, Polynomial))
+        self.assertTrue(isinstance(p, Polynomial))
 
     def test_get_item_exists(self):
         p = Polynomial.Monomial((1, 2, 3))
-        self.assertEquals(p[Powers((1, 2, 3))], 1.0)
+        self.assertEqual(p[Powers((1, 2, 3))], 1.0)
 
     def test_get_item_only_exists(self):
         p = Polynomial.Monomial((1, 2, 3))
-        self.assertEquals(p[Powers((2, 3, 4))], 0.0)
+        self.assertEqual(p[Powers((2, 3, 4))], 0.0)
 
     def test_len(self):
         p = Polynomial.Monomial((1, 2, 3))
-        self.assertEquals(len(p), 1)
+        self.assertEqual(len(p), 1)
 
     def test_has_term(self):
         t = (1, 2, 3)
         p = Polynomial.Monomial(t)
-        self.assert_(p.has_term(Powers(t)))
-        self.assert_(not p.has_term(Powers((2, 2, 3))))
+        self.assertTrue(p.has_term(Powers(t)))
+        self.assertTrue(not p.has_term(Powers((2, 2, 3))))
 
     def test_call(self):
         p = -1.5*Polynomial.Monomial((1, 2, 3))
-        self.assertEquals(p((1.0, 1.0, 1.0)), -1.5)
+        self.assertEqual(p((1.0, 1.0, 1.0)), -1.5)
 
     def test_call_negative_count(self):
-        for v in xrange(1, 10):
+        for v in range(1, 10):
             one = (1, )*v
             p = 2.0*Polynomial.Monomial(one)
             mone = (-1, )*v
             if v%2:
-                self.assertEquals(p(mone), -2.0)
+                self.assertEqual(p(mone), -2.0)
             else:
-                self.assertEquals(p(mone), +2.0)
+                self.assertEqual(p(mone), +2.0)
 
 class Default(unittest.TestCase):
 
@@ -81,21 +81,21 @@ class Default(unittest.TestCase):
     def test_repr(self):
         t = Polynomial(3)
         s = 'Polynomial(3)'
-        self.assertEquals(repr(t), s)
+        self.assertEqual(repr(t), s)
 
     def test_len(self):
         t = Polynomial(9)
-        self.assertEquals(len(t), 0)
+        self.assertEqual(len(t), 0)
 
 class Zero(unittest.TestCase):
 
     def test_poly_with_no_terms_is_constant(self):
         p = Polynomial(6)
-        self.assert_(p.is_constant())
+        self.assertTrue(p.is_constant())
 
     def test_poly_with_no_terms_is_zero_degree(self):
         p = Polynomial(6)
-        self.assertEquals(p.degree(), 0)
+        self.assertEqual(p.degree(), 0)
 
     def test_poly_with_no_terms_is_false(self):
         t = Polynomial(52)
@@ -123,39 +123,39 @@ class Zero(unittest.TestCase):
             assert 0, 'non-zero polynomial not detected.'
 
     def _assert_zero_poly(self, p):
-        self.assert_(isinstance(p, Polynomial))
+        self.assertTrue(isinstance(p, Polynomial))
 
         #we can use boolean test.  since Polynomial does not implement
         #__nonzero__, instead __len__ will be called, which gives the
         #number of non-zero terms and hence behaves correctly.
 
-        self.assert_(not p)
+        self.assertTrue(not p)
 
     def test_mul_float(self):
 
         """Multiplication by zero should remove all monomials."""
 
         t = Polynomial.Monomial((1, 2, 3, 4, 5))
-        self.assert_(isinstance(t, Polynomial))
+        self.assertTrue(isinstance(t, Polynomial))
         u = 0.0*t
         self._assert_zero_poly(u)
 
     def test_mul_other(self):
         t = Polynomial.Monomial((2, 2, 3, 4, 5))
-        self.assert_(isinstance(t, Polynomial))
-        self.assertEquals(len(t), 1)
+        self.assertTrue(isinstance(t, Polynomial))
+        self.assertEqual(len(t), 1)
         tt = Polynomial.Monomial((1, 2, 3, 4, 5))
         t += tt
-        self.assert_(isinstance(t, Polynomial))
-        self.assertEquals(len(t), 2, repr(t._terms))
+        self.assertTrue(isinstance(t, Polynomial))
+        self.assertEqual(len(t), 2, repr(t._terms))
         zero = 0.0*Polynomial.Monomial((5, 2, 8, 4, 5))
-        self.assert_(isinstance(zero, Polynomial))
+        self.assertTrue(isinstance(zero, Polynomial))
         t0 = t*zero
         self._assert_zero_poly(t0)
         t1 = zero*t
         self._assert_zero_poly(t1)
         zero = 0.0*tt
-        self.assert_(isinstance(zero, Polynomial))
+        self.assertTrue(isinstance(zero, Polynomial))
         t0 = t*zero
         self._assert_zero_poly(t0)
         t1 = zero*t
@@ -165,31 +165,31 @@ class Norms(unittest.TestCase):
 
     def test_l1_zero(self):
         p = Polynomial(3)
-        self.assertEquals(p.l1_norm(), 0.0)
+        self.assertEqual(p.l1_norm(), 0.0)
 
     def test_l1_example(self):
         p = Polynomial(3)
         p += 1.0*Polynomial.Monomial((1, 2, 3))
-        self.assertEquals(p.l1_norm(), 1.0)
+        self.assertEqual(p.l1_norm(), 1.0)
         p -= 2.0*Polynomial.Monomial((0, 2, 0))
-        self.assertEquals(p.l1_norm(), 3.0)
+        self.assertEqual(p.l1_norm(), 3.0)
         p += (0.0+5.0J)*Polynomial.Monomial((0, 1, 1))
-        self.assertEquals(p.l1_norm(), 8.0)
+        self.assertEqual(p.l1_norm(), 8.0)
 
 class Degree(unittest.TestCase):
 
     def test_zero(self):
         p = Polynomial(6)
-        self.assertEquals(p.degree(), 0)
+        self.assertEqual(p.degree(), 0)
 
     def test_one(self):
-        for j in xrange(5):
-            for i in xrange(6):
+        for j in range(5):
+            for i in range(6):
                 pows = [0,]*6
                 pows[i] = j
                 p = Polynomial(6)
                 p = 1.0*Polynomial.Monomial(tuple(pows))
-                self.assertEquals(p.degree(), j)
+                self.assertEqual(p.degree(), j)
 
     def test_example(self):
         p = Polynomial(5)
@@ -197,12 +197,12 @@ class Degree(unittest.TestCase):
         p -= 0.2*Polynomial.Monomial((1, 7, 1, 1, 0))
         p += 0.3*Polynomial.Monomial((0, 0, 1, 1, 2))
         p -= 0.4*Polynomial.Monomial((1, 0, 9, 1, 0))
-        self.assertEquals(p.degree(), 11)
+        self.assertEqual(p.degree(), 11)
 
 class Call(unittest.TestCase):
 
     def setUp(self):
-        self.powers = tuple(xrange(10))
+        self.powers = tuple(range(10))
         self.tol = 1.0e-16
 
     def test_mul(self):
@@ -218,8 +218,8 @@ class Call(unittest.TestCase):
             p_one = Polynomial.Monomial(tuple(one))
             prod *= p_one(x)
             p_accumulate = p_accumulate * p_one
-        self.assert_(abs(p(x)-prod)<self.tol)
-        self.assert_(abs(p_accumulate(x)-prod)<self.tol)
+        self.assertTrue(abs(p(x)-prod)<self.tol)
+        self.assertTrue(abs(p_accumulate(x)-prod)<self.tol)
 
     def test_add(self):
         p_as_one = Polynomial.Monomial(self.powers)
@@ -235,59 +235,59 @@ class Call(unittest.TestCase):
             total += p_one(x)
             p_as_many[m_one] = coeff
             p_accumulate = p_accumulate + p_one
-        self.assert_(abs(p_as_one(x)-total)<self.tol)
-        self.assert_(abs(p_as_many(x)-total)<self.tol)
-        self.assert_(abs(p_accumulate(x)-total)<self.tol)
+        self.assertTrue(abs(p_as_one(x)-total)<self.tol)
+        self.assertTrue(abs(p_as_many(x)-total)<self.tol)
+        self.assertTrue(abs(p_accumulate(x)-total)<self.tol)
 
 class Diff(unittest.TestCase):
 
     def test_diff_sum(self):
-        for vars in xrange(1, 100):
+        for vars in range(1, 100):
             triangle = Powers(tuple(range(1, vars+1)))
             t = Polynomial(vars, terms={triangle: -1.0})
             u = Polynomial(vars)
-            for i in xrange(vars):
+            for i in range(vars):
                 u += t.diff(i)
-            self.assertEquals(len(u), vars)
+            self.assertEqual(len(u), vars)
             ones = (1.0, )*vars
-            self.assertEquals(u(ones), -float((vars*(vars+1))/2))
+            self.assertEqual(u(ones), -float((vars*(vars+1))/2))
 
     def test_diff_pow0(self):
-        for vars in xrange(1, 100):
+        for vars in range(1, 100):
             triangle = Powers(tuple(range(1, vars+1)))
             t = Polynomial(vars, terms={triangle: -1.0})
-            for i in xrange(vars):
+            for i in range(vars):
                 u = t.diff_pow(i, 0)
-                self.assertEquals(u, t)
+                self.assertEqual(u, t)
 
     def test_diff_pow1_sum(self):
-        for vars in xrange(1, 100):
+        for vars in range(1, 100):
             triangle = Powers(tuple(range(1, vars+1)))
             t = Polynomial(vars, terms={triangle: -1.0})
             u = Polynomial(vars)
-            for i in xrange(vars):
+            for i in range(vars):
                 u += t.diff_pow(i, 1)
-            self.assertEquals(len(u), vars)
+            self.assertEqual(len(u), vars)
             ones = (1.0, )*vars
-            self.assertEquals(u(ones), -float((vars*(vars+1))/2))
+            self.assertEqual(u(ones), -float((vars*(vars+1))/2))
 
 class Constant(unittest.TestCase):
 
     def test_example(self):
         p = Polynomial(6, terms={Powers((0,0,0,0,0,0)): -0.5})
-        self.assert_(p.is_constant())
+        self.assertTrue(p.is_constant())
 
     def test_too_many_terms(self):
         p = Polynomial(6, terms={Powers((0,0,0,0,0,0)): -0.5,
                                  Powers((1,0,0,0,0,0)): 0.2})
-        self.assert_(not p.is_constant())
+        self.assertTrue(not p.is_constant())
 
     def test_non_constant_single_term(self):
         p = Polynomial(6, terms={Powers((0,0,0,2,0,0)): -0.5})
-        self.assert_(not p.is_constant())
+        self.assertTrue(not p.is_constant())
 
 def rand_powers(vars, max_power):
-    return tuple([random.randint(0, max_power) for i in xrange(vars)])
+    return tuple([random.randint(0, max_power) for i in range(vars)])
 
 def rand_monomial(vars, max_power):
     return Powers(rand_powers(vars, max_power))
@@ -303,7 +303,7 @@ def rand_poly(vars=-1, max_vars=40, max_power=10, max_terms=25, max_coeff=1.0):
         vars = random.randint(1, max_vars)
     t = Polynomial(vars)
     n_terms = random.randint(0, max_terms)
-    for i in xrange(n_terms):
+    for i in range(n_terms):
         m = rand_monomial(vars, max_power)
         t[m] = rand_coeff(max_coeff)
     return t
@@ -328,7 +328,7 @@ def _eq(a, b, tol=None):
         return True
     for m, c in diff.powers_and_coefficients():
         if abs(c)>tol:
-            print 'error coeff size:', abs(c)
+            print(('error coeff size:', abs(c)))
             return False
     return True
 
@@ -341,15 +341,15 @@ class Ring(unittest.TestCase):
 
         """Important that this is true, or all bets are off!"""
 
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 z = zero(a, b, c)
                 neg_a = z-a
                 for m, c in a.powers_and_coefficients():
-                    self.assertEquals(neg_a[m], -c)
+                    self.assertEqual(neg_a[m], -c)
                 for m, c in neg_a.powers_and_coefficients():
-                    self.assertEquals(a[m], -c)
+                    self.assertEqual(a[m], -c)
 
     def _gen_arguments(self, vars):
         a = rand_poly(vars)
@@ -358,12 +358,12 @@ class Ring(unittest.TestCase):
         yield (a, b, c)
 
     def _test_identity(self, lhs, rhs):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 left = lhs(a, b, c)
                 right = rhs(a, b, c)
-                self.assert_(_eq(left, right), 
+                self.assertTrue(_eq(left, right), 
                              '\nLHS:%s\n\nRHS:%s\n'%(left, right))
 
     def test_associative_add(self):
@@ -510,56 +510,56 @@ class Ring(unittest.TestCase):
         self._test_identity(lhs, rhs)
 
     def test_monomials_add(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 s = Polynomial(vars)
                 for po, co in a.powers_and_coefficients():
                     mon = co*Polynomial.Monomial(tuple(po))
                     s += mon
-                self.assert_(_eq(a, s))
+                self.assertTrue(_eq(a, s))
 
     def test_monomials_set(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 s = Polynomial(vars)
                 for po, co in a.powers_and_coefficients():
                     s[po] = co
-                self.assert_(_eq(a, s))
+                self.assertTrue(_eq(a, s))
 
     def test_homogeneous_add(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 s = Polynomial(vars)
-                for deg in xrange(a.degree()+1):
+                for deg in range(a.degree()+1):
                     h = a.homogeneous(deg)
                     s += h
-                self.assert_(_eq(a, s))
+                self.assertTrue(_eq(a, s))
 
     def test_call_sum(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 s = 0.0
                 for m, c in a.powers_and_coefficients():
                     s += c
                 ones = (1.0, )*vars
-                self.assertEquals(a(ones), s)
+                self.assertEqual(a(ones), s)
 
     def test_has_terms(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 100)
             for a, b, c in self._gen_arguments(vars):
                 for m, c in a.powers_and_coefficients():
-                    self.assert_(a.has_term(m))
+                    self.assertTrue(a.has_term(m))
 
     def test_powers_and_coefficients(self):
         def lhs(a, b, c):
             d = Polynomial(a.n_vars())
             for m, c in a.powers_and_coefficients():
-                self.assertEquals(len(m), a.n_vars())
+                self.assertEqual(len(m), a.n_vars())
                 d[m] = c
             return d
         def rhs(a, b, c):
@@ -572,9 +572,9 @@ class Ring(unittest.TestCase):
         def lhs(a, b, c):
             odds, evens = a.partition(isOdd)
             for m, c in odds.powers_and_coefficients():
-                self.assert_((m.degree())%2)
+                self.assertTrue((m.degree())%2)
             for m, c in odds.powers_and_coefficients():
-                self.assert_(not (m.degree())%2)
+                self.assertTrue(not (m.degree())%2)
             d = odds+evens
             return d
         def rhs(a, b, c):
@@ -592,12 +592,12 @@ class Poisson(unittest.TestCase):
         yield (a, b, c)
 
     def _test_identity(self, lhs, rhs):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = 2*random.randint(1, 5)
             for a, b, c in self._gen_arguments(vars):
                 left = lhs(a, b, c)
                 right = rhs(a, b, c)
-                self.assert_(_eq(left, right), 
+                self.assertTrue(_eq(left, right), 
                              '\nLHS:%s\n\nRHS:%s\n'%(left, right))
 
     def test_poisson_linear_in_first_mul(self):
@@ -653,15 +653,15 @@ class Poisson(unittest.TestCase):
         pb = Polynomial.poisson_bracket
         def jacobi_lhs(a, b, c):
             return pb(a, pb(b, c))+pb(b, pb(c, a))+pb(c, pb(a, b))
-        for case in xrange(8):
+        for case in range(8):
             vars = 2*random.randint(1, 8)
             a = rand_poly(vars, max_power=4, max_terms=25, max_coeff=0.5)
             b = rand_poly(vars, max_power=4, max_terms=25, max_coeff=0.5)
             c = rand_poly(vars, max_power=4, max_terms=25, max_coeff=0.5)
-            self.assert_(_eq(jacobi_lhs(a, b, c), zero(a, b, c), tol=5.0e-8))
+            self.assertTrue(_eq(jacobi_lhs(a, b, c), zero(a, b, c), tol=5.0e-8))
 
     def test_poisson_checks_even(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = 1+2*random.randint(0, 25)
             a = rand_poly(vars)
             try:
@@ -669,13 +669,13 @@ class Poisson(unittest.TestCase):
             except IndexError:
                 pass
             else:
-                self.assert_(False)
+                self.assertTrue(False)
 
     def test_poisson_self(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = 2*random.randint(1, 50)
             a = rand_poly(vars)
-            self.assert_(_eq(a.poisson_bracket(a), zero(a, a, a), tol=1.0e-12))
+            self.assertTrue(_eq(a.poisson_bracket(a), zero(a, a, a), tol=1.0e-12))
 
 class PowersAndCoeff(unittest.TestCase):
 
@@ -683,7 +683,7 @@ class PowersAndCoeff(unittest.TestCase):
         self.n_cases = max(1, int(n_cases/2))
 
     def test_monomials_never_repeated(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = 1+2*random.randint(0, 25)
             p = rand_poly(vars)
             found = []
@@ -698,7 +698,7 @@ class PowersAndCoeff(unittest.TestCase):
         generating random polynomials.  Therefore, we set deliberately
         each term to zero and test again."""
         
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = 1+2*random.randint(0, 25)
             p = rand_poly(vars)
             for m, c in p.powers_and_coefficients():
@@ -713,54 +713,54 @@ class Pow(unittest.TestCase):
         self.n_cases = max(1, int(n_cases/2))
 
     def test_power_zero_gives_one(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 5)
             p = rand_poly(vars)
             q = p**0
             one = Polynomial(p.n_vars())
             one[Powers((0,)*p.n_vars())] = 1.0
-            self.assert_(q == one)
+            self.assertTrue(q == one)
 
     def test_power_one_gives_same(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 5)
             p = rand_poly(vars)
             q = p**1
-            self.assert_(q == p)
+            self.assertTrue(q == p)
 
     def test_power_two_gives_mul_self(self):
-        for case in xrange(self.n_cases):
+        for case in range(self.n_cases):
             vars = random.randint(1, 5)
             p = rand_poly(vars)
             q = p**2
-            self.assert_((q-p*p).l_infinity_norm() < 1.0e-14, (q, p))
+            self.assertTrue((q-p*p).l_infinity_norm() < 1.0e-14, (q, p))
 
     def test_power_by_doubling_vs_usual_method(self):
         tol = 1.0e-12
-        for e in xrange(5):
-            for case in xrange(self.n_cases):
+        for e in range(5):
+            for case in range(self.n_cases):
                 vars = random.randint(1, 5)
                 p = rand_poly(vars)
                 q0 = p**e
                 q1 = p.pow_doubling(e)
                 err = (q0-q1).l_infinity_norm()
                 if err > tol:
-                    print p
-                    print q0
-                    print q1
-                    print err
-                    print
-                self.assert_(err < tol)
+                    print(p)
+                    print(q0)
+                    print(q1)
+                    print(err)
+                    print()
+                self.assertTrue(err < tol)
 
     def test_pow_associative_up_to_numerical_error(self):
         tol = 1.0e-12
-        for e in xrange(1, 5):
-            for case in xrange(self.n_cases):
+        for e in range(1, 5):
+            for case in range(self.n_cases):
                 vars = random.randint(1, 5)
                 p = rand_poly(vars)
                 q0 = p**(e-1)
                 q1 = p**e
-                self.assert_((p*q0-q1).l_infinity_norm() < tol)
+                self.assertTrue((p*q0-q1).l_infinity_norm() < tol)
 
 class Substitute(unittest.TestCase):
 
@@ -783,21 +783,21 @@ class Substitute(unittest.TestCase):
         p = Polynomial(vars)
         p[Powers((2, 1, 0))] = -0.3+0.2J
         p[Powers((1, 1, 0))] = 0.995
-        ids = [self._identity(vars, i) for i in xrange(vars)]
+        ids = [self._identity(vars, i) for i in range(vars)]
         q = p.substitute(ids)
-        self.assert_(p==q)
+        self.assertTrue(p==q)
 
     def test_sub_squares(self):
         vars = 3
         p = Polynomial(vars)
         p[Powers((2, 1, 0))] = -0.3+0.2J
         p[Powers((1, 1, 0))] = 0.995
-        sqs = [self._square(vars, i) for i in xrange(vars)]
+        sqs = [self._square(vars, i) for i in range(vars)]
         q = p.substitute(sqs)
-        self.assertEquals(len(q), len(p))
+        self.assertEqual(len(q), len(p))
         for m, c in p.powers_and_coefficients():
             doubled = Powers(tuple([2*i for i in m]))
-            self.assertEquals(q[doubled], c)
+            self.assertEqual(q[doubled], c)
 
     def test_sub_sum(self):
         vars = 3
@@ -806,15 +806,15 @@ class Substitute(unittest.TestCase):
         b = 0.995
         p += a*Polynomial.Monomial((2, 1, 3))
         p += b*Polynomial.Monomial((1, 1, 0))
-        ids = [self._identity(vars, i) for i in xrange(vars)]
+        ids = [self._identity(vars, i) for i in range(vars)]
         ids[0] = self._identity(vars, 0)+2.0*self._identity(vars, 2)
         q = p.substitute(ids)
-        self.assertEquals(len(q), 5)
-        self.assertEquals(q[Powers((2, 1, 3))], a)
-        self.assertEquals(q[Powers((1, 1, 4))], 4.0*a)
-        self.assertEquals(q[Powers((0, 1, 5))], 4.0*a)
-        self.assertEquals(q[Powers((1, 1, 0))], b)
-        self.assertEquals(q[Powers((0, 1, 1))], 2.0*b)
+        self.assertEqual(len(q), 5)
+        self.assertEqual(q[Powers((2, 1, 3))], a)
+        self.assertEqual(q[Powers((1, 1, 4))], 4.0*a)
+        self.assertEqual(q[Powers((0, 1, 5))], 4.0*a)
+        self.assertEqual(q[Powers((1, 1, 0))], b)
+        self.assertEqual(q[Powers((0, 1, 1))], 2.0*b)
 
     def test_sub_neg(self):
         vars = 3
@@ -823,11 +823,11 @@ class Substitute(unittest.TestCase):
         b = 0.995
         p += a*Polynomial.Monomial((2, 2, 3))
         p += b*Polynomial.Monomial((1, 1, 0))
-        neg_ids = [-self._identity(vars, i) for i in xrange(vars)]
+        neg_ids = [-self._identity(vars, i) for i in range(vars)]
         q = p.substitute(neg_ids)
-        self.assertEquals(len(q), len(p))
-        self.assertEquals(q[Powers((2, 2, 3))], -a)
-        self.assertEquals(q[Powers((1, 1, 0))], b)
+        self.assertEqual(len(q), len(p))
+        self.assertEqual(q[Powers((2, 2, 3))], -a)
+        self.assertEqual(q[Powers((1, 1, 0))], b)
         
 class NumericalTruncation(unittest.TestCase):
 
@@ -842,7 +842,7 @@ class NumericalTruncation(unittest.TestCase):
     def test_truncate_smaller_than_exists_returns_same(self):
         p = self.p
         q = p.with_small_coeffs_removed(0.0)
-        self.assert_(q == p)
+        self.assertTrue(q == p)
 
     def test_truncate_removes_proper_terms(self):
         p = self.p
@@ -850,41 +850,41 @@ class NumericalTruncation(unittest.TestCase):
         q1 = Polynomial(3, terms={Powers((2, 1, 3)): 0.1,
                                   Powers((1, 1, 4)): 0.2,
                                   Powers((1, 1, 0)): 0.0000001+0.01J})
-        self.assert_(q0 == q1)
+        self.assertTrue(q0 == q1)
 
     def test_truncate_all_gives_zero(self):
         p = self.p
         q0 = p.with_small_coeffs_removed(999.0)
         q1 = Polynomial(3)
-        self.assert_(q0 == q1)
-        self.assert_(not q0) #redundancy
-        self.assert_(not q1) #redundancy
+        self.assertTrue(q0 == q1)
+        self.assertTrue(not q0) #redundancy
+        self.assertTrue(not q1) #redundancy
 
 class IsHomogeneous(unittest.TestCase):
 
     def test_one_is(self):
         p = Polynomial(2, terms={Powers((1, 2)): 0.5,
                                  Powers((1, 1)): 0.0})
-        self.assert_(p.is_homogeneous())
-        self.assert_(not p.is_homogeneous(0))
-        self.assert_(not p.is_homogeneous(1))
-        self.assert_(not p.is_homogeneous(2))
-        self.assert_(p.is_homogeneous(3))
-        self.assert_(not p.is_homogeneous(4))
-        self.assert_(not p.is_homogeneous(5))
-        self.assert_(not p.is_homogeneous(6))
+        self.assertTrue(p.is_homogeneous())
+        self.assertTrue(not p.is_homogeneous(0))
+        self.assertTrue(not p.is_homogeneous(1))
+        self.assertTrue(not p.is_homogeneous(2))
+        self.assertTrue(p.is_homogeneous(3))
+        self.assertTrue(not p.is_homogeneous(4))
+        self.assertTrue(not p.is_homogeneous(5))
+        self.assertTrue(not p.is_homogeneous(6))
 
     def test_one_is_not(self):
         p = Polynomial(2, terms={Powers((1, 2)): 0.5,
                                  Powers((1, 1)): 0.1})
-        self.assert_(not p.is_homogeneous())
-        self.assert_(not p.is_homogeneous(0))
-        self.assert_(not p.is_homogeneous(1))
-        self.assert_(not p.is_homogeneous(2))
-        self.assert_(not p.is_homogeneous(3))
-        self.assert_(not p.is_homogeneous(4))
-        self.assert_(not p.is_homogeneous(5))
-        self.assert_(not p.is_homogeneous(6))
+        self.assertTrue(not p.is_homogeneous())
+        self.assertTrue(not p.is_homogeneous(0))
+        self.assertTrue(not p.is_homogeneous(1))
+        self.assertTrue(not p.is_homogeneous(2))
+        self.assertTrue(not p.is_homogeneous(3))
+        self.assertTrue(not p.is_homogeneous(4))
+        self.assertTrue(not p.is_homogeneous(5))
+        self.assertTrue(not p.is_homogeneous(6))
 
 class RealAndImag(unittest.TestCase):
 
@@ -900,7 +900,7 @@ class RealAndImag(unittest.TestCase):
             assert c != 0.0
             assert isinstance(c, float)
         q = re + (1.0J)*im
-        self.assert_(p == q)
+        self.assertTrue(p == q)
 
     def test_example(self):
         p = Polynomial(1, terms={Powers((0,)): 1+2J,
@@ -916,7 +916,7 @@ class RealAndImag(unittest.TestCase):
         re = p.real()
         im = p.imag()
         self.check_polynomial(p, re, im)
-        self.assert_(not im)
+        self.assertTrue(not im)
         
     def test_imag(self):
         p = Polynomial(1, terms={Powers((2,)): 2.3J,
@@ -924,22 +924,22 @@ class RealAndImag(unittest.TestCase):
         re = p.real()
         im = p.imag()
         self.check_polynomial(p, re, im)
-        self.assert_(not re)
+        self.assertTrue(not re)
 
 class CoordinateMonomial(unittest.TestCase):
 
     def test_one_correct(self):
         n_vars = 10
-        for i in xrange(n_vars):
+        for i in range(n_vars):
             m = Polynomial.CoordinateMonomial(n_vars, i)
-            self.assert_(len(m) == 1)
+            self.assertTrue(len(m) == 1)
             po, co = list(m.powers_and_coefficients())[0]
-            self.assert_(co == 1.0)
-            for j in xrange(n_vars):
+            self.assertTrue(co == 1.0)
+            for j in range(n_vars):
                 if i == j:
-                    self.assert_(po[j] == 1)
+                    self.assertTrue(po[j] == 1)
                 else:
-                    self.assert_(po[j] == 0)
+                    self.assertTrue(po[j] == 0)
 
 class InputOutput(unittest.TestCase):
 
@@ -961,15 +961,15 @@ class InputOutput(unittest.TestCase):
 
     def test_read_single_old_format(self):
         p0 = read_ascii_polynomial(iter(self.f0), is_xxpp_format=1)
-        self.assert_(p0 == self.p0)
+        self.assertTrue(p0 == self.p0)
 
     def test_read_two_old_format(self):
         p1 = read_ascii_polynomial(iter(self.f1), is_xxpp_format=1)
-        self.assert_(p1 == self.p1)
+        self.assertTrue(p1 == self.p1)
 
     def test_read_single_new_format(self):
         p0 = read_ascii_polynomial(iter(self.f0), is_xxpp_format=0)
-        self.assert_(p0 == self.p0)
+        self.assertTrue(p0 == self.p0)
 
     def test_write_read_single_old_format(self):
         f0 = open(tmp_path+'_tmp.pol', 'w')
@@ -978,7 +978,7 @@ class InputOutput(unittest.TestCase):
         f0 = open(tmp_path+'_tmp.pol', 'r')
         p0 = read_ascii_polynomial(f0, is_xxpp_format=1)
         f0.close()
-        self.assert_(p0 == self.p0)
+        self.assertTrue(p0 == self.p0)
 
     def test_write_read_two_old_format(self):
         f1 = open(tmp_path+'_tmp.pol', 'w')
@@ -987,7 +987,7 @@ class InputOutput(unittest.TestCase):
         f1 = open(tmp_path+'_tmp.pol', 'r')
         p1 = read_ascii_polynomial(f1, is_xxpp_format=1)
         f1.close()
-        self.assert_(p1 == self.p1, (p1, self.p1))
+        self.assertTrue(p1 == self.p1, (p1, self.p1))
 
     def test_write_read_single_new_format(self):
         f0 = open(tmp_path+'_tmp.pol', 'w')
@@ -996,17 +996,17 @@ class InputOutput(unittest.TestCase):
         f0 = open(tmp_path+'_tmp.pol', 'r')
         p0 = read_ascii_polynomial(f0, is_xxpp_format=0)
         f0.close()
-        self.assert_(p0 == self.p0)
+        self.assertTrue(p0 == self.p0)
 
     def test_xxpp_to_xpxp(self):
         xxpp = [1,2,3,4,5,6]
         xpxp = xxpp_to_xpxp(xxpp)
-        self.assert_(xpxp == [1, 4, 2, 5, 3, 6], xpxp)
+        self.assertTrue(xpxp == [1, 4, 2, 5, 3, 6], xpxp)
 
     def test_xpxp_to_xxpp(self):
         xpxp = [1,2,3,4,5,6]
         xxpp = xpxp_to_xxpp(xpxp)
-        self.assert_(xxpp == [1, 3, 5, 2, 4, 6], xxpp)
+        self.assertTrue(xxpp == [1, 3, 5, 2, 4, 6], xxpp)
 
 def suite():
     suites = []

@@ -101,14 +101,14 @@ class PolynomialRingInterface(GradedInterface):
         """
         self.check_elt(pol_p)
         if not names:
-            names = ['x_{%d}'%i for i in xrange(0, self.n_vars())]
+            names = ['x_{%d}'%i for i in range(0, self.n_vars())]
         assert len(names) == self.n_vars()
         terms = []
         desc = '[%d terms]:\n= '%len(pol_p)
         for po, co in pol_p.powers_and_coefficients():
             term = []
             term.append(pretty_complex(co))
-            for i in xrange(self.n_vars()):
+            for i in range(self.n_vars()):
                 name, power = names[i], po[i]
                 if power:
                     if power == 1:
@@ -120,7 +120,7 @@ class PolynomialRingInterface(GradedInterface):
     #miscellaneous
     def grad(self, poly):
         self.check_elt(poly)
-        return tuple([poly.diff(i) for i in xrange(0, self.n_vars())])
+        return tuple([poly.diff(i) for i in range(0, self.n_vars())])
 
 class PolynomialRing(PolynomialRingInterface):
     """

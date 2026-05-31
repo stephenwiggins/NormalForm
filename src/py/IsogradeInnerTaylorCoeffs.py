@@ -104,7 +104,7 @@ class IsogradeInnerTaylorCoeffs:
             p_list = []
         else:
             assert p_list == []
-        for i in xrange(0, self.alg.grade(poly)+1-self.offset):
+        for i in range(0, self.alg.grade(poly)+1-self.offset):
             p_list.append(self.poly_to_inner_taylor(poly, i))
         return p_list
 

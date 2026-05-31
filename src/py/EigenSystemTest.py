@@ -10,7 +10,7 @@ class SortGeneral(unittest.TestCase):
     def test_example(self):
         seq = [9, 8, 7, 6, 3, 4, 4, 5, 3, 2, 1, 0]
         sorted = sort_by_ranking_function(seq)
-        self.assertEquals(sorted, [0, 1, 2, 3, 3, 4, 4, 5, 6, 7, 8, 9])
+        self.assertEqual(sorted, [0, 1, 2, 3, 3, 4, 4, 5, 6, 7, 8, 9])
 
 class SortByPosition(unittest.TestCase):
 
@@ -25,19 +25,19 @@ class SortByPosition(unittest.TestCase):
 
     def test_first(self):
         sorted = sort_by_ranking_function(self.seq, self._first)
-        self.assertEquals(sorted,
+        self.assertEqual(sorted,
                           [(1, 'd', 1), (2, 'b', 10), (3, 'c', 4), (4, 'a', 2)])
 
     def test_last(self):
         sorted = sort_by_ranking_function(self.seq, self._last)
-        self.assertEquals(sorted, 
+        self.assertEqual(sorted, 
                           [(1, 'd', 1), (4, 'a', 2), (3, 'c', 4), (2, 'b', 10)])
 
     def test_next_to_last(self):
         def next_to_last(x):
             return x[-2]
         sorted = sort_by_ranking_function(self.seq, next_to_last)
-        self.assertEquals(sorted, 
+        self.assertEqual(sorted, 
                           [(4, 'a', 2), (2, 'b', 10), (3, 'c', 4), (1, 'd', 1)])
 
 class SortByRealAndImag(unittest.TestCase):
@@ -54,7 +54,7 @@ class SortByRealAndImag(unittest.TestCase):
         def add_vec(val_seq):
             return [dummy(val, [0.0]) for val in val_seq]
         sorted = sort_by_ranking_function(add_vec(seq), rank_real_before_imag)
-        self.assertEquals(sorted, add_vec(res))
+        self.assertEqual(sorted, add_vec(res))
 
 class ValVec:
 
@@ -91,7 +91,7 @@ class LocatePairs(unittest.TestCase):
         seq = []
         eig = EigenSystem(seq, 1.0e-15)
         eig._collect_plus_minus_pairs()
-        self.assertEquals(eig.get_plus_minus_pairs(), [])
+        self.assertEqual(eig.get_plus_minus_pairs(), [])
 
     def test_example(self):
         seq = [ValVec(+1, 'v0'),
@@ -102,7 +102,7 @@ class LocatePairs(unittest.TestCase):
         eig._collect_plus_minus_pairs()
         exp = [(ValVec(+1, 'v0'), ValVec(-1.001, 'v1')),
                (ValVec(+2.001, 'v3'), ValVec(-2.0003, 'v2'))]
-        self.assertEquals(eig.get_plus_minus_pairs(), exp)
+        self.assertEqual(eig.get_plus_minus_pairs(), exp)
 
     def test_exceed_tolerance(self):
         seq = [ValVec(+1, 0),
@@ -134,23 +134,23 @@ class Pure(unittest.TestCase):
 
     def test_zero_gives_both_false(self):
         c = 0.0
-        self.assert_(not is_pure_real(c))
-        self.assert_(not is_pure_imag(c))
+        self.assertTrue(not is_pure_real(c))
+        self.assertTrue(not is_pure_imag(c))
 
     def test_nonzero_float_is_pure_real(self):
         c = -0.1
-        self.assert_(is_pure_real(c))
-        self.assert_(not is_pure_imag(c))
+        self.assertTrue(is_pure_real(c))
+        self.assertTrue(not is_pure_imag(c))
 
     def test_nonzero_imag_is_pure_imag(self):
         c = 0.3J
-        self.assert_(not is_pure_real(c))
-        self.assert_(is_pure_imag(c))
+        self.assertTrue(not is_pure_real(c))
+        self.assertTrue(is_pure_imag(c))
 
     def test_mixed_complex_gives_both_false(self):
         c = 54.3-0.3J
-        self.assert_(not is_pure_real(c))
-        self.assert_(not is_pure_imag(c))
+        self.assertTrue(not is_pure_real(c))
+        self.assertTrue(not is_pure_imag(c))
 
 class Type(unittest.TestCase):
 
@@ -159,7 +159,7 @@ class Type(unittest.TestCase):
         eig = EigenSystem(seq, 1.0e-1)
         eig._collect_plus_minus_pairs()
         eig._determine_equilibrium_type()
-        self.assertEquals(eig.get_equilibrium_type(), '')
+        self.assertEqual(eig.get_equilibrium_type(), '')
 
     def test_determine_non_seq(self):
         seq = [1,2]
@@ -193,7 +193,7 @@ class Type(unittest.TestCase):
         eig = EigenSystem(seq, 1.0e-1)
         eig._collect_plus_minus_pairs()
         eig._determine_equilibrium_type()
-        self.assertEquals(eig.get_equilibrium_type(), 'csc')
+        self.assertEqual(eig.get_equilibrium_type(), 'csc')
 
     def test_saddles_come_first(self):
         seq = [ValVec(+1J, (0.1,0.2,0.3)),

@@ -70,10 +70,10 @@ class NormalFormData:
             if degree:
                 polyd = poly.degree() 
                 if polyd != degree:
-                    print "poly %s is degree %d not degree %d" % (name, polyd, degree)
+                    print(("poly %s is degree %d not degree %d" % (name, polyd, degree)))
 
         def check_vec_degree(poly_vec, name, degree):
-            for i in xrange(len(poly_vec)):
+            for i in range(len(poly_vec)):
                 check_poly_degree(poly_vec[i], name+"[%d]"%i, degree)
 
         def read_file_vec_polynomials(
@@ -86,10 +86,10 @@ class NormalFormData:
             return vec_poly
         # see what we have
         file_istr = open(os.path.join(dir_name, "norm_to_ints.vec"), 'r')
-        line = file_istr.next()
+        line = next(file_istr)
         n_vars = int(line)
         assert n_vars >= 0
-        line = file_istr.next()
+        line = next(file_istr)
         n_ints = int(line)
         assert n_ints >= 0
         file_istr.close()
@@ -107,8 +107,8 @@ class NormalFormData:
         file_istr = open(os.path.join(dir_name, "ints_to_freq.vec"), 'r')
         self.ints_to_freq = read_ascii_vec_polynomials(file_istr, False)
         file_istr.close()
-        print 'Primary frequencies:', [poly((0.0,)*n_ints)
-                                       for poly in self.ints_to_freq]
+        print(('Primary frequencies:', [poly((0.0,)*n_ints)
+                                       for poly in self.ints_to_freq]))
         my_order_f = [poly((0.0,)*n_ints) for poly in self.ints_to_freq]
         # Don't do reordering for first NF only second with order_f set
         new_order = None
@@ -117,19 +117,19 @@ class NormalFormData:
             degree = check_poly_degree(self.ints_to_freq[0], "the second normal form", degree)
             degree = 18
             new_order = []
-            for i in xrange(n_ints):
-                for j in xrange(n_ints):
+            for i in range(n_ints):
+                for j in range(n_ints):
                     if (abs(my_order_f[j] - order_f[i]) < 1.0e-4):
                         new_order.append(j)
-            print "new_order", new_order
+            print(("new_order", new_order))
             assert len(new_order) == n_ints
             #RE-Read in new order, These are dim dof- no is_xxpp_format
             file_istr = open(os.path.join(dir_name, "ints_to_freq.vec"), 'r')
             self.ints_to_freq = read_ascii_vec_polynomials(file_istr, False,
                                                            order=new_order)
             file_istr.close()
-            print 'Primary frequencies:', [poly((0.0,)*n_ints)
-                                           for poly in self.ints_to_freq]
+            print(('Primary frequencies:', [poly((0.0,)*n_ints)
+                                           for poly in self.ints_to_freq]))
         # equi_to_tham - equi coords are not reordered until diagonalised
         file_istr = open(os.path.join(dir_name, "equi_to_tham.pol"), 'r')
         self.equi_to_tham = read_ascii_polynomial(
@@ -151,7 +151,7 @@ class NormalFormData:
         file_istr.close()
         # reorder input variables
         if order_f:
-            for i in xrange(len(mat)):
+            for i in range(len(mat)):
                 mat[i] = reorder_dof(mat[i], new_order)
         assert n_vars == len(mat)
         assert n_vars == len(mat[1])
@@ -192,11 +192,11 @@ def compare_poly(poly1, poly2, comment="", grade=None):
     else:
         poly = poly1 - poly2
     if poly.n_terms() != 0:
-        print poly.l_infinity_norm(), '    \t', \
+        print((poly.l_infinity_norm(), '    \t', \
         poly.l1_norm() / (poly.n_terms() * 2), \
-              '    \t', comment
+              '    \t', comment))
     else:
-        print "0 \t\t\t"*2, comment
+        print(("0 \t\t\t"*2, comment))
 
 def compare_poly_vec(poly_v1, poly_v2, comment="", grade=4):
     n_polys = len(poly_v1)
@@ -205,26 +205,26 @@ def compare_poly_vec(poly_v1, poly_v2, comment="", grade=4):
     assert n_vars == poly_v2[0].n_vars()
 
     ring = PolynomialRing(n_vars)
-    for i in xrange(n_polys):
+    for i in range(n_polys):
         poly_vec1 = ring.isograde(poly_v1[i], 0, up_to=grade+1)
         poly_vec2 = ring.isograde(poly_v2[i], 0, up_to=grade+1)
         compare_poly(poly_vec1, poly_vec2, comment+"[%d]" %(i))
 
 def compare_normal_form(dir_name1, dir_name2, grade=4):
     def compare_matrix(dia, mat1, mat2, comment):
-        print dia.matrix_norm(array(mat1, Float)-array(mat2, Float)), comment
+        print((dia.matrix_norm(array(mat1, Float)-array(mat2, Float)), comment))
 
-    print "Comparing data in Normal form files upto grade %d" %(grade)
-    print
-    print "Reading python data"
+    print(("Comparing data in Normal form files upto grade %d" %(grade)))
+    print()
+    print("Reading python data")
 
     first = NormalFormData(dir_name1, is_xxpp_format=True, degree=grade)
 
     ring = PolynomialRing(first.equi_to_tham.n_vars())
     
-    print
-    print "Comparing python data with cpp files upto grade %d" %(grade)
-    print "l_infinity_norm \t l1_norm \t\t polynomials"
+    print()
+    print(("Comparing python data with cpp files upto grade %d" %(grade)))
+    print("l_infinity_norm \t l1_norm \t\t polynomials")
     ringIO = PolynomialRingIO(ring)
     file_istr = open("hill_l1_18--norm_to_diag.vpol", 'r')
     pv_norm_to_diag = ringIO.read_sexp_vector_of_polynomials(file_istr)
@@ -234,8 +234,8 @@ def compare_normal_form(dir_name1, dir_name2, grade=4):
     pv_diag_to_norm = ringIO.read_sexp_vector_of_polynomials(file_istr)
     compare_poly_vec(first.diag_to_norm,
                      pv_diag_to_norm, "diag_to_norm", grade=grade-1)
-    print
-    print "Reading mathematica data"
+    print()
+    print("Reading mathematica data")
     n_ints = len(first.ints_to_freq)
     # get the frequencies to find the order of the planes
     order_f=[poly((0.0,)*n_ints) for poly in first.ints_to_freq]
@@ -264,20 +264,20 @@ def compare_normal_form(dir_name1, dir_name2, grade=4):
     sd_in_fd = dia.matrix_as_vector_of_row_polynomials(matrixmultiply(
         array(second.equi_to_diag, Float),array(first.diag_to_equi, Float)))
 
-    print
-    print "Comparing mathematica data with cpp files upto grade %d" %(grade-1)
+    print()
+    print(("Comparing mathematica data with cpp files upto grade %d" %(grade-1)))
     compare_poly_vec(pv_norm_to_diag,
                      poly_vec_substitute(fd_in_sd, poly_vec_substitute(
         poly_vec_isograde(second.norm_to_diag, grade-1), sd_in_fd)),
                      "norm_to_diag", grade=grade-1)
-    print "Comparing mathematica data with cpp files upto grade %d" %(grade-1)
+    print(("Comparing mathematica data with cpp files upto grade %d" %(grade-1)))
     compare_poly_vec(pv_diag_to_norm,
                      poly_vec_substitute(fd_in_sd, poly_vec_substitute(
         poly_vec_isograde(second.diag_to_norm, grade-1), sd_in_fd)),
                      "diag_to_norm", grade=grade-1)
 
-    print
-    print "Comparing mathematica data with python upto grade %d" %(grade)
+    print()
+    print(("Comparing mathematica data with python upto grade %d" %(grade)))
 
     compare_poly(first.equi_to_tham, second.equi_to_tham,
                  "equi_to_tham", grade=grade)

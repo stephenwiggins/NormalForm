@@ -137,9 +137,9 @@ class LieTriangle:
 
 	#check input list and dict against current_row value
         assert len(self._w) == (self._current_row + 1)
-        for i in xrange(0, self._current_row + 1):
-            for j in xrange(0, i + 1):
-                assert self._h_ij.has_key(_make_db_key(j, i-j))
+        for i in range(0, self._current_row + 1):
+            for j in range(0, i + 1):
+                assert _make_db_key(j, i-j) in self._h_ij
 
 	#compute polynomial factorial conversions
         self._iso = IsogradeInnerTaylorCoeffs(self.lie_algebra(),
@@ -184,7 +184,7 @@ class LieTriangle:
         semi-classical Lie algebra?  We include those too.
     
         """
-        for i in xrange(self._lie_alg.dof()):
+        for i in range(self._lie_alg.dof()):
             if(powers[2*i+1] !=  powers[2*i]):
                 #term in remainder
                 return False
@@ -229,7 +229,7 @@ class LieTriangle:
         """
         alg = self.lie_algebra()
         assert len(self._freq) == 0
-        for i in xrange(0, alg.dof()):
+        for i in range(0, alg.dof()):
             q_ind = 2*i
             p_ind = q_ind+1
             #classical and semi-classical
@@ -329,7 +329,7 @@ class LieTriangle:
         result = self.lie_algebra().zero()
         for powers, coeff in rem.powers_and_coefficients():
             inner_prod = 0.0;
-            for i in xrange(0, self.lie_algebra().dof()):
+            for i in range(0, self.lie_algebra().dof()):
                 inner_prod += (powers[2*i+1] - powers[2*i]) * self._freq[i]
             if abs(inner_prod) < 1.0e-5:
                 logger.info('WARNING! small innner product %s'%inner_prod)
@@ -427,16 +427,16 @@ class LieTriangle:
         """
         db_key = _make_db_key(i, j)
         alg = self.lie_algebra()
-        if self._h_ij.has_key(db_key):
+        if db_key in self._h_ij:
             pass
         else:
             if (j == 0):
                 #this is more like assert (j != 0)
-                assert self._h_ij.has_key(db_key)
+                assert db_key in self._h_ij
             else:
                 #we copy here for safety; ADB:
                 temp = self.triangle_minus_unknown_term(i+1, j-1).copy()
-                for k in xrange(0, i+1):
+                for k in range(0, i+1):
                     if (k+1) == (i+j):
                         #$\{H_0^0, w_{i+j}\}$
                         assert (i-k, j-1) == (0, 0)
@@ -472,7 +472,7 @@ class LieTriangle:
         """
         i = self._current_row
         logger.info('Correcting the H_{i}^{j} using the remainder.')
-        for j in xrange(1, i + 1):
+        for j in range(1, i + 1):
             db_key = _make_db_key(i - j, j)
             #
             # we do not want to use writeback on dictionary-like shelves;
@@ -502,15 +502,15 @@ class LieTriangle:
         """
         db_key = _make_db_key(i, j)
         alg = self.lie_algebra()
-        if self._h_ij.has_key(db_key):
+        if db_key in self._h_ij:
             pass
         else:
             if (j == 0):
-                assert self._h_ij.has_key(db_key)
+                assert db_key in self._h_ij
             else:
                 #copy for safety; ADB:
                 temp = self.triangle(i+1, j-1).copy()
-                for k in xrange(0, i+1):
+                for k in range(0, i+1):
                     temp += binomial(i, k) * alg.bracket(self.triangle(i-k, j-1),
                                                          self._w[k+1])
                 self._h_ij[db_key] = temp

@@ -27,7 +27,7 @@ if len(sys.argv)>1:
         n_bath_modes = int(sys.argv[2])
                 
 if len(sys.argv)>3 and sys.argv[3]=="python":
-    print "running python only"
+    print("running python only")
     config = { "tolerance" : 5.0e-12 ,
                "degree" : degree ,
                "max_degree" : 20 ,

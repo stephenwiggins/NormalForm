@@ -8,7 +8,7 @@ and is released under the GNU General Public License version 2.
 
 import unittest
 import random
-import StringIO
+import io
 
 from Powers import Powers
 from Polynomial import Polynomial
@@ -35,48 +35,48 @@ n_cases = 4
 class PolynomialRingTest(unittest.TestCase):
 
     def test_one(self):
-        for n_vars in xrange(1, 7):
+        for n_vars in range(1, 7):
             ring = PolynomialRing(n_vars)
             one = ring.one()
-            self.assert_(isinstance(one, Polynomial))
-            self.assert_(one.n_vars() == n_vars)
-            self.assert_(len(one) == 1)
+            self.assertTrue(isinstance(one, Polynomial))
+            self.assertTrue(one.n_vars() == n_vars)
+            self.assertTrue(len(one) == 1)
             po, co = list(one.powers_and_coefficients())[0]
-            self.assert_(len(po) == n_vars)
+            self.assertTrue(len(po) == n_vars)
             for p in po:
-                self.assert_(p == 0)
-            self.assert_(co == 1.0)
+                self.assertTrue(p == 0)
+            self.assertTrue(co == 1.0)
 
     def test_zero(self):
-        for n_vars in xrange(1, 7):
+        for n_vars in range(1, 7):
             ring = PolynomialRing(n_vars)
             zero = ring.zero()
-            self.assert_(isinstance(zero, Polynomial))
-            self.assert_(zero.n_vars() == n_vars)
-            self.assert_(len(zero) == 0)
-            self.assert_(not zero)
+            self.assertTrue(isinstance(zero, Polynomial))
+            self.assertTrue(zero.n_vars() == n_vars)
+            self.assertTrue(len(zero) == 0)
+            self.assertTrue(not zero)
 
     def test_n_vars(self):
-        for n_vars in xrange(1, 25):
+        for n_vars in range(1, 25):
             ring = PolynomialRing(n_vars)
-            self.assert_(ring.n_vars() == n_vars)
+            self.assertTrue(ring.n_vars() == n_vars)
 
     def test_coordinate_monomial(self):
-        for n_vars in xrange(1, 7):
+        for n_vars in range(1, 7):
             ring = PolynomialRing(n_vars)
-            for var in xrange(n_vars):
+            for var in range(n_vars):
                 x = ring.coordinate_monomial(var)
-                self.assert_(isinstance(x, Polynomial))
-                self.assert_(x.n_vars() == n_vars)
-                self.assert_(len(x) == 1)
+                self.assertTrue(isinstance(x, Polynomial))
+                self.assertTrue(x.n_vars() == n_vars)
+                self.assertTrue(len(x) == 1)
                 po, co = list(x.powers_and_coefficients())[0]
-                self.assert_(len(po) == n_vars)
+                self.assertTrue(len(po) == n_vars)
                 for i, p in enumerate(po):
                     if i == var:
-                        self.assert_(p == 1)
+                        self.assertTrue(p == 1)
                     else:
-                        self.assert_(p == 0)
-                self.assert_(co == 1.0)
+                        self.assertTrue(p == 0)
+                self.assertTrue(co == 1.0)
 
     def test_grad(self):
         poly = Polynomial(3, {Powers((0, 0, 0)): 1.0,
@@ -91,7 +91,7 @@ class PolynomialRingTest(unittest.TestCase):
                             Powers((0, 0, 5)): -9})
         g2 = Polynomial(3, {Powers((0, 1, 4)): -45.0})
         for expected, actual in zip((g0, g1, g2), grad):
-            self.assert_(expected == actual, (expected, actual))
+            self.assertTrue(expected == actual, (expected, actual))
 
 def suite():
     suites = []
